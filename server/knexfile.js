@@ -2,9 +2,9 @@ module.exports = {
   client: 'mysql',
   connection: {
     host: '127.0.0.1',
-    user: '<your_db_username>',
-    password: '<your_db_password>',
-    database: '<your_schema_name>',
+    user: 'root',
+    password: 'rootroot',
+    database: 'SmartAdventures',
     charset: 'utf8',
   },
 };
