@@ -4,12 +4,13 @@ const User = require('../models/user');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-// const authorize = require('../middlewares/auth');
+const authorize = require('../middlewares/auth');
 require('dotenv').config();
 
 const SALT_ROUNDS = 8;
 const JWT_SECRET = process.env.JWT_SECRET;
 
+// Function to create authToken
 const signJWTToken = user => {
     const token = jwt.sign(
         {
@@ -23,7 +24,7 @@ const signJWTToken = user => {
     return token;
 };
 
-router.route('/register') // POST - /users
+router.route('/register') // POST - /users with authToken
     .post((req, res) => {
         const { password } = req.body;
 
@@ -37,7 +38,6 @@ router.route('/register') // POST - /users
                 .save()
                 .then((newUser) => {
                     const token = signJWTToken(newUser);
-
                     return res.status(201).json({ authToken: token });
                 })
                 .catch((err) => {
@@ -46,7 +46,7 @@ router.route('/register') // POST - /users
         });
     });
 
-router.route('/login')
+router.route('/login') // POST - /login with authToken (why is this post and not get?)
     .post((req, res) => {
         const { email, password } = req.body;
 
@@ -67,37 +67,38 @@ router.route('/login')
             })
     })
 
-router.route('/users/:userId') // GET - /profile
-    .get((req, res) => {
-        User.where({ id: req.params.userId })
+router.route('/profile') // GET - /profile with authToken
+    .get(authorize, (req, res) => {
+        User.where({ id: req.decoded.id })
             .fetch()
             .then((user) => {
-                res.status(200).json(user);
+                delete user.attributes.password;
+                return res.status(200).json(user);
             })
-            .catch((err) =>
-                res.status(400).json({ message: `Error, can't get user with userId of ${req.params.userId}`, error: err })
+            .catch((err) => {
+                return res.status(400).json({ message: `Error, can't fetch the user profile`, error: err });
+            }
             );
     })
-    .put((req, res) => {
-        User.where({ id: req.params.userId })
+    // PUT - /profile with authToken
+    .put(authorize, (req, res) => {
+        User.where({ id: req.decoded.id })
             .fetch()
             .then((user) => {
                 user
                     .save({
                         firstName: req.body.firstName,
                         lastName: req.body.lastName,
-                        phone: req.body.phone,
-                        email: req.body.email,
-                        address: req.body.address,
-                        city: req.body.city,
-                        province: req.body.province,
-                        country: req.body.country
+                        // phone: req.body.phone,
+                        // email: req.body.email, // Poses issues with auth
+                        // password: req.body.email // Poses issues with auth
                     })
                     .then((updatedUser) => {
-                        res.status(200).json(updatedUser);
+                        const token = signJWTToken(updatedUser);
+                        return res.status(201).json({ authToken: token });
                     })
                     .catch((err) => {
-                        res.status(400).json({ message: `Error, can't update user with userId of ${req.params.userId}`, error: err })
+                        return res.status(400).json({ message: `Error, can't update user with userId of ${req.params.userId}`, error: err })
                     });
             });
     });
