@@ -1,22 +1,26 @@
 const express = require('express');
-const Trip = require('../models/trip');
 const router = express.Router();
+const Trip = require('../models/trip');
 
-router.route('/trips/:userId')
-    .get((req, res) => {
-        Trip.where({ user_id: req.params.userId })
+const authorize = require('../middlewares/auth');
+
+router.route('/trips')
+    // GET - /trips - get a list of all trips for a specific user
+    .get(authorize, (req, res) => {
+        Trip.where({ user_id: req.decoded.id })
             .fetchAll()
             .then((trips) => {
                 res.status(200).json(trips);
             })
             .catch((err) => {
-                res.status(400).json({ message: `Error getting trips for user ${req.params.userId}`, error: err });
+                res.status(400).json({ message: `Error getting trips for user ${req.decoded.id}`, error: err });
             });
     })
-    .post((req, res) => {
+    // POST - /trips - create a trip for a specific user
+    .post(authorize, (req, res) => {
         new Trip({
             name: req.body.name,
-            user_id: req.params.userId,
+            user_id: req.decoded.id,
             participants: JSON.stringify(req.body.participants),
             emergency_contacts: JSON.stringify(req.body.emergency_contacts),
             departure_date: req.body.departure_date,
@@ -32,24 +36,13 @@ router.route('/trips/:userId')
                 res.status(201).json(newTrip);
             })
             .catch((err) =>
-                res.status(400).json({ message: `Error, can't create a new trip for user ${req.params.userId}`, error: err })
-            );
-    });
-
-
-router.route('/trips/:userId/:tripId')
-    .get((req, res) => {
-        Trip.where({ user_id: req.params.userId, id: req.params.tripId })
-            .fetch()
-            .then((trip) => {
-                res.status(200).json(trip);
-            })
-            .catch((err) =>
-                res.status(400).json({ message: `Error getting trip ${req.params.tripId} for user ${req.params.userId}`, error: err })
+                res.status(400).json({ message: `Error, can't create a new trip for user ${req.decoded.id}`, error: err })
             );
     })
-    .put((req, res) => {
-        Trip.where({ user_id: req.params.userId, id: req.params.tripId })
+
+router.route('/trips/:tripId')
+    .put(authorize, (req, res) => {
+        Trip.where({ user_id: req.decoded.id, id: req.params.tripId })
             .fetch()
             .then((trip) => {
                 trip
@@ -69,10 +62,22 @@ router.route('/trips/:userId/:tripId')
                     res.status(200).json(updatedTrip);
                 })
                 .catch((err) => {
-                    res.status(400).json({ message: `Error, can't update trip ${req.params.tripId} of user ${req.params.userId}`, error: err })
+                    res.status(400).json({ message: `Error, can't update trip ${req.params.tripId} of user ${req.decoded.id}`, error: err })
                 })
             });
     });
 
+// Access does not require "authorize" as it should be accessible for everyone at this point in time
+router.route('/trips/:tripId')
+.get((req, res) => {
+    Trip.where({ id: req.params.tripId })
+        .fetch()
+        .then((trip) => {
+            res.status(200).json(trip);
+        })
+        .catch((err) =>
+            res.status(400).json({ message: `Error getting trip ${req.params.tripId}`, error: err })
+        );
+})
 
 module.exports = router;
