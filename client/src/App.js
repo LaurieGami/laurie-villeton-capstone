@@ -1,11 +1,20 @@
 import './App.scss';
 
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
+import HomePage from './pages/HomePage/HomePage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
+
 function App() {
-  return (
-    <div className="App">
-      <h1>Hello</h1>
-    </div>
-  );
+    return (
+      <BrowserRouter>
+        {/* <Header /> */}
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/profile" component={ProfilePage} />
+        </Switch>
+      </BrowserRouter>
+    )
 }
 
 export default App;
