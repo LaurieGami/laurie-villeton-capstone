@@ -5,10 +5,7 @@ module.exports = [
     lastName: 'Villeton',
     phone: '123-456-7890',
     email: 'laurie@test.ca',
-    address: '1313 Dream St',
-    city: 'Dreamland',
-    province: 'BC',
-    country: 'Canada'
+    password: '123'
   },
   {
     id: 2,
@@ -16,10 +13,7 @@ module.exports = [
     lastName: 'Newb',
     phone: '123-456-7890',
     email: 'koala@test.ca',
-    address: '666 Happy St',
-    city: 'Heaven',
-    province: 'BC',
-    country: 'Canada'
+    password: '123'
   },
   {
     id: 3,
@@ -27,9 +21,6 @@ module.exports = [
     lastName: 'Dixcent',
     phone: '123-456-7890',
     email: 'sandy@test.ca',
-    address: '33 French St',
-    city: 'BJ City',
-    province: 'Isere',
-    country: 'France'
+    password: '123'
   }
 ];

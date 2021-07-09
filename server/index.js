@@ -1,42 +1,25 @@
 const express = require('express');
 const cors = require("cors");
-const knex = require('knex')(require('./knexfile'));
 
 require('dotenv').config();
 const PORT = process.env.PORT || 5000;
 
 // Routes
 const app = express();
+const usersRoute = require('./routes/users');
+const tripsRoute = require('./routes/trips');
 
 // Middlewares
 app.use(express.json());
 // app.use(express.static("public"));
 app.use(cors());
+app.use(express.urlencoded({ extended: false })); // not sure what this is for
 
 app.get('/', (req, res) => {
     res.send('Welcome to my API');
 });
 
-// get all users data
-app.get('/users', (req, res) => {
-    knex
-        .select('*')
-        .from('users')
-        .then((data) => {
-            res.json(data);
-        })
-        .catch((err) => res.send('Error getting users data'));
-});
-
-// get all trips data
-app.get('/trips', (req, res) => {
-    knex
-        .select('*')
-        .from('trips')
-        .then((data) => {
-            res.json(data);
-        })
-        .catch((err) => res.send('Error getting trips data'));
-});
+app.use('/api', usersRoute);
+app.use('/api', tripsRoute);
 
 app.listen(PORT, console.log(`running at http://localhost:${PORT}`));
