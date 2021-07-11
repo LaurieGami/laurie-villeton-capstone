@@ -1,15 +1,13 @@
 import './HomePage.scss';
 
 import { Component } from 'react';
-import axios from 'axios';
+import { Link } from "react-router-dom";
 
-const baseUrl = 'http://localhost:5000/api';
+import illustration from '../../assets/images/home-page-illustration.png';
 
 class HomePage extends Component {
     state = {
-        isLoggedIn: false,
-        activePage: null,
-        errorMessage: ''
+        isLoggedIn: false
     }
 
     componentDidMount() {
@@ -18,127 +16,34 @@ class HomePage extends Component {
         if (authToken) {
             this.setState({
                 isLoggedIn: true
-            });
+            }, () => this.props.history.push(`/profile`));
         }
     }
 
-    login = (e) => {
-        e.preventDefault();
-
-        const { email, password } = e.target;
-
-        axios.post(`${baseUrl}/login`, {
-            email: email.value,
-            password: password.value
-        }).then(res => {
-            sessionStorage.setItem('authToken', res.data.authToken);
-            this.setState({
-                isLoggedIn: true,
-                errorMessage: ''
-            });
-        }).catch((err) => {
-            this.setState({
-                errorMessage: err.response.data.message
-            });
-        });
-    }
-
-    register = (e) => {
-        e.preventDefault();
-
-        const {
-            firstName,
-            lastName,
-            email,
-            phone,
-            password
-        } = e.target;
-
-        axios.post(`${baseUrl}/register`, {
-            firstName: firstName.value,
-            lastName: lastName.value,
-            email: email.value,
-            phone: phone.value,
-            password: password.value
-        }).then(res => {
-            sessionStorage.setItem('authToken', res.data.authToken);
-            this.setState({
-                isLoggedIn: true,
-                errorMessage: ''
-            });
-        }).catch((err) => {
-            this.setState({
-                errorMessage: err.response.data.message
-            });
-        });
-    }
-
-    renderRegister() {
-        return (
-            <div>
-                <h1>Register</h1>
-                <form onSubmit={this.register}>
-                    <div className='form-group'>
-                        *First Name: <input type='text' name='firstName' />
-                    </div>
-                    <div className='form-group'>
-                        *Last Name: <input type='text' name='lastName' />
-                    </div>
-                    <div className='form-group'>
-                        *Email: <input type='text' name='email' />
-                    </div>
-                    <div className='form-group'>
-                        *Phone: <input type='text' name='phone' />
-                    </div>
-                    <div className='form-group'>
-                        *Password: <input type='password' name='password' />
-                    </div>
-                    <button type="submit" className='btn btn-primary'>
-                        Signup
-                    </button>
-                </form>
-            </div>
-        )
-    }
-
-    renderLogin = () => {
-        return (
-            <div>
-                <h1>Login</h1>
-                <form onSubmit={this.login}>
-                    <div className='form-group'>
-                        Email: <input type='text' name='email' />
-                    </div>
-                    <div className='form-group'>
-                        Password: <input type='password' name='password' />
-                    </div>
-                    <button type="submit" className='btn btn-primary'>
-                        Login
-                    </button>
-                </form>
-            </div>
-        )
-    }
-
     render() {
-        const { isLoggedIn, activePage, errorMessage } = this.state;
+        const { isLoggedIn } = this.state;
 
         return (
-            <div className='HomePage'>
-                {!isLoggedIn && !activePage &&
-                    <div className="auth-container">
-                        <button onClick={() => this.setState({ activePage: "login" })}>Login</button>
-                        <button onClick={() => this.setState({ activePage: "register" })}>Register</button>
-                    </div>}
+            <article className="home-page">
+                {!isLoggedIn &&
+                    <>
+                        <section className="home-page__info">
+                            <h2 className="home-page__subtitle">Heading Outdoors?</h2>
+                            <h1 className="home-page__title">Leave a Trip Plan.</h1>
+                            <p className="home-page__text">No one ever expects to get into trouble outdoors. But, a turn in the weather, mistake in judgment, unexpected injury, equipment failure, or sudden nightfall can quickly change any recreational outing into a crisis.</p>
+                            <p className="home-page__text home-page__text--bold">Does anyone know where you have gone and when you expect to return?</p>
+                        </section>
 
-                {!isLoggedIn && !!activePage &&
-                    <div className="auth-container">
-                        {activePage === "login" ? this.renderLogin() : this.renderRegister()}
-                        {errorMessage && <label className="error-message">{errorMessage}</label>}
-                    </div>}
-
-                {!!isLoggedIn && this.props.history.push(`/profile`)}
-            </div>
+                        <section className="home-page__buttons">
+                            <Link to="/login" className="home-page__btn home-page__btn--login">Login</Link>
+                            <Link to="/register" className="home-page__btn home-page__btn--register">Register</Link>
+                        </section>
+                        <section className="home-page__illustration">
+                            <img className="home-page__img" src={illustration} alt="Home Page Illustration"/>
+                        </section>
+                    </>
+                }
+            </article>
         )
     }
 }

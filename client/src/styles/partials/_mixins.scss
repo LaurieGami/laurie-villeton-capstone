@@ -1,0 +1,125 @@
+@use './colors';
+@use './variables' as *;
+
+// MEDIA QUERIES
+//Breakpoint for tablet size
+@mixin tablet{
+    @media screen and (min-width: 768px){
+        @content;
+    }
+}
+
+// Breakpoint for desktop size
+@mixin desktop{
+    @media screen and (min-width: 1280px){
+        @content;
+    }
+}
+
+// BUTTON STYLES
+@mixin primary-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: colors.$ink-6;
+    background-color: colors.$ink-1;
+    border: none;
+    border-radius: $border-radius;
+    padding: 0 $padding;
+    width: 100%;
+    height: 56px;
+    font: $mSubheader;
+
+    &:hover {
+        background-color: colors.$ink-2;
+    }
+
+    @include tablet {
+        width: auto;
+        height: 58px;
+        font: $tSubheader;
+    }
+}
+
+@mixin secondary-button {
+    @include primary-button;
+    background-color: colors.$ink-6;
+    color: colors.$ink-1;
+    border: 1px solid colors.$ink-1;
+
+    &:hover {
+        background-color: colors.$ink-6;
+        color: colors.$ink-2;
+        border: 1px solid colors.$ink-2;
+    }
+}
+
+// FORM INPUT STYLES
+@mixin primary-input {
+    display: flex;
+    align-items: center;
+    color: colors.$ink-1;
+    background-color: colors.$ink-6;
+    border: 1px solid colors.$ink-3;
+    border-radius: $border-radius;
+    padding: 0 $padding;
+    width: 100%;
+    height: 36px;
+    font: $tBodyMedium;
+    margin-bottom: $margin;
+
+    &:focus {
+        outline: none;
+        border: 1px solid colors.$active; 
+    }
+
+    &:invalid {
+        outline: none;
+        border: 1px solid colors.$warning; 
+    }
+
+    &::placeholder {
+        color: colors.$ink-1;
+    }
+
+
+    &--invalid {
+        border: 1px solid colors.$error;
+    }
+}
+
+// ICON STYLES
+@mixin primary-icon {
+    width: 22px;
+    height: 22px;
+    margin-left: $margin*0.5;
+
+    &-path {
+        fill: colors.$ink-6;
+    }
+}
+
+@mixin small-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: $margin*0.5;
+
+    &-path {
+        fill: colors.$ink-1;
+    }
+}
+
+// NOTIFICATION STYLES
+@mixin error-notification {
+    display: flex;
+    align-items: center;
+    color: colors.$ink-1;
+    background-color: colors.$error-bg;
+    border-radius: $border-radius;
+    padding: 0 $padding;
+    width: 100%;
+    height: 32px;
+    font: $tBodySmall;
+    margin-bottom: $margin;
+}

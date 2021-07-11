@@ -2,31 +2,44 @@
 @use '../../styles/partials/variables' as *;
 @use '../../styles/partials/colors';
 
-.home-page {
+.login-page {
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: $padding;
     min-height: 100vh;
-    background-color: colors.$accent-blue;
-
-    &__subtitle {
-        font: $mSubheader;
-        margin-bottom: $margin*0.5;
-    }
+    background-color: colors.$accent-yellow;
 
     &__title {
         font: $mPageHeader;
-        margin-bottom: $margin*0.5;
+        margin-bottom: $margin;
     }
 
-    &__text {
-        margin: $margin 0;
-        font: $mBodyLarge;
-        color: colors.$ink-2;
+    &__illustration {
+        display: flex;
+        justify-content: center;
+    }
 
-        &--bold {
-            font-weight: 700;
+    &__img {
+        display: flex;
+        width: auto;
+        margin: $margin 0;
+    }
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+
+    &__input {
+        @include primary-input;
+    }
+
+    &__error-message {
+        @include error-notification;
+
+        &-icon {
+            @include small-icon;
         }
     }
 
@@ -37,13 +50,10 @@
     &__btn {
         @include primary-button;
         
-        &--login {
-            margin-right: $margin;
+        &-icon {
+            @include primary-icon;
         }
-
-        &--register {
-            @include secondary-button;
-        }
+        
     }
 
     &__illustration {
