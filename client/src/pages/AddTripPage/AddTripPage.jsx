@@ -47,6 +47,11 @@ class AddTripPage extends Component {
         });
     };
 
+    handleSubmit =(e) => {
+        e.preventDefault();
+        console.log("Submit!")
+    }
+
     handleParticipantsChange = (event) => {
         const updatedParticipants = [...this.state.participants];
         updatedParticipants[event.target.dataset.index][event.target.className] = event.target.value;
@@ -188,10 +193,10 @@ class AddTripPage extends Component {
                                     />
                                     <div className="btn-box">
                                         {this.state.participants.length !== 1 &&
-                                            <button onClick={() => this.removeParticipant(i)}>Remove</button>
+                                            <button type="button" data-index={i} onClick={() => this.removeParticipant(i)}>Remove</button>
                                         }
                                         {this.state.participants.length - 1 === i &&
-                                            <button onClick={() => this.addParticipant()}>Add</button>                                        }
+                                            <button type="button" onClick={() => this.addParticipant()}>Add</button>                                        }
                                     </div>
                                 </div>
                             );
