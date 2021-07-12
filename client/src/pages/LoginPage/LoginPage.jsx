@@ -23,7 +23,7 @@ class LoginPage extends Component {
         }
     }
 
-    login = (e) => {
+    login = e => {
         e.preventDefault();
 
         const { email, password } = e.target;
@@ -43,64 +43,6 @@ class LoginPage extends Component {
             });
         });
     }
-
-    // register = (e) => {
-    //     e.preventDefault();
-
-    //     const {
-    //         firstName,
-    //         lastName,
-    //         email,
-    //         phone,
-    //         password
-    //     } = e.target;
-
-    //     axios.post(`${baseUrl}/register`, {
-    //         firstName: firstName.value,
-    //         lastName: lastName.value,
-    //         email: email.value,
-    //         phone: phone.value,
-    //         password: password.value
-    //     }).then(res => {
-    //         sessionStorage.setItem('authToken', res.data.authToken);
-    //         this.setState({
-    //             isLoggedIn: true,
-    //             errorMessage: ''
-    //         }, () => this.props.history.push(`/profile`));
-    //     }).catch((err) => {
-    //         this.setState({
-    //             errorMessage: err.response.data.message
-    //         });
-    //     });
-    // }
-
-    // renderRegister = () => {
-    //     return (
-    //         <div>
-    //             <h1>Register</h1>
-    //             <form onSubmit={() => this.register()}>
-    //                 <div className='form-group'>
-    //                     *First Name: <input type='text' name='firstName' />
-    //                 </div>
-    //                 <div className='form-group'>
-    //                     *Last Name: <input type='text' name='lastName' />
-    //                 </div>
-    //                 <div className='form-group'>
-    //                     *Email: <input type='text' name='email' />
-    //                 </div>
-    //                 <div className='form-group'>
-    //                     *Phone: <input type='text' name='phone' />
-    //                 </div>
-    //                 <div className='form-group'>
-    //                     *Password: <input type='password' name='password' />
-    //                 </div>
-    //                 <button type="submit" className='btn btn-primary'>
-    //                     Signup
-    //                 </button>
-    //             </form>
-    //         </div>
-    //     )
-    // }
 
     render() {
         const { isLoggedIn, errorMessage } = this.state;
@@ -129,7 +71,8 @@ class LoginPage extends Component {
                             // autoComplete="new-password"
                             // onBlur={this.validateEmergencyContacts}
                             ></input>
-                            {/* Email */}
+                            
+                            {/* Password */}
                             <input
                                 className="login-form__input"
                                 // className={

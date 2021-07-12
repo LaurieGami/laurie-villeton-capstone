@@ -1,0 +1,44 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/colors';
+
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    padding: $padding;
+    min-height: 100vh;
+    background-color: colors.$ink-6;
+
+    &__title {
+        font: $mPageHeader;
+        margin-bottom: $margin*0.5;
+    }
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    border-radius: $border-radius*2;
+    background-color: colors.$accent-green;
+    padding: $padding;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: $margin*0.5;
+    }
+
+    &__name {
+        font: $mSubheader;
+        
+    }
+
+    &__email, &__phone {
+        font: $mBodyLarge;
+    }
+
+    &__button {
+        
+    }
+}

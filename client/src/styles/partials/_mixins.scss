@@ -35,11 +35,11 @@
         background-color: colors.$ink-2;
     }
 
-    @include tablet {
-        width: auto;
-        height: 58px;
-        font: $tSubheader;
-    }
+    // @include tablet {
+    //     width: auto;
+    //     height: 58px;
+    //     font: $tSubheader;
+    // }
 }
 
 @mixin secondary-button {

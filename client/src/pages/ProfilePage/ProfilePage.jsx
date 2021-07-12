@@ -58,13 +58,21 @@ class ProfilePage extends Component {
 
         return (
             <main className="profile-page">
-                {/* Profile Overview Component */}
-                <article>
-                    <h3>My Profile:</h3>
-                    <p><strong>Name:</strong> {userInfo.firstName} {userInfo.lastName}</p>
-                    <p><strong>Email:</strong> {userInfo.email}</p>
-                    <p><strong>Phone: </strong>{userInfo.phone}</p>
+                <h1 className="profile-page__title">Your Profile</h1>
+                {/* Profile Info Component */}
+                <article className="profile-info">
+                    <section className="profile-info__header">
+                        <h2 className="profile-info__name">{userInfo.firstName} {userInfo.lastName}</h2>
+                        <div className="profile-info__buttons">
+                            <button className="profile-info__btn">Edit</button>
+                            <button className="profile-info__btn" onClick={() => this.handleAuthFail()}>Logout</button>
+                        </div>
+                    </section>
+                    <p className="profile-info__email">{userInfo.email}</p>
+                    <p className="profile-info__phone">{userInfo.phone}</p>
                 </article>
+
+                {/* Trips Info Component */}
                 <article>
                     <h3>My Trips:</h3>
                     <Link to="/trips/add">Add a trip</Link>

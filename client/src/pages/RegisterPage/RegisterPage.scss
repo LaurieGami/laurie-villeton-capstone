@@ -1,0 +1,58 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/colors';
+
+.register-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: $padding;
+    min-height: 100vh;
+    background-color: colors.$accent-purple;
+
+    &__title {
+        font: $mPageHeader;
+        margin-bottom: $margin;
+    }
+
+    &__illustration {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__img {
+        display: flex;
+        width: auto;
+        margin: $margin 0;
+    }
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+
+    &__input {
+        @include primary-input;
+    }
+
+    &__error-message {
+        @include error-notification;
+
+        &-icon {
+            @include small-icon;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+    }
+
+    &__btn {
+        @include primary-button;
+        
+        &-icon {
+            @include primary-icon;
+        }
+        
+    }
+}
