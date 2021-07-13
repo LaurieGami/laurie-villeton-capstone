@@ -35,6 +35,14 @@
         @include primary-input;
     }
 
+    &__warning-message {
+        @include warning-notification;
+
+        &-icon {
+            @include small-icon;
+        }
+    }
+
     &__error-message {
         @include error-notification;
 

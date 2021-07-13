@@ -8,7 +8,7 @@
     justify-content: center;
     padding: $padding;
     min-height: 100vh;
-    background-color: colors.$accent-yellow;
+    background-color: colors.$accent-pink;
 
     &__title {
         font: $mPageHeader;
@@ -33,6 +33,14 @@
 
     &__input {
         @include primary-input;
+    }
+
+    &__warning-message {
+        @include warning-notification;
+
+        &-icon {
+            @include small-icon;
+        }
     }
 
     &__error-message {

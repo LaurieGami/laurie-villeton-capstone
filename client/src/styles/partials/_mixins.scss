@@ -123,3 +123,8 @@
     font: $tBodySmall;
     margin-bottom: $margin;
 }
+
+@mixin warning-notification {
+    @include error-notification;
+    background-color: colors.$warning-bg;
+}
