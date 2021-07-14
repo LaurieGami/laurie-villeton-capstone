@@ -1,0 +1,120 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/colors';
+
+.trips-list-page {
+    display: flex;
+    flex-direction: column;
+    padding: $padding;
+    min-height: 100vh;
+    background-color: colors.$ink-6;
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: $margin*1.5;
+    }
+
+    &__title {
+        font: $mPageHeader;
+        margin-bottom: $margin*0.5;
+    }
+
+    &__account{
+        // &-link {}
+
+        &-img {
+            display: flex;
+            width: 30px;
+            height: auto;
+        }
+    }
+
+    &__btn {
+        @include primary-button;
+    }
+}
+
+.trip-list {
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+        display: flex;
+        flex-wrap: wrap;
+        border-radius: $border-radius*2;
+        background-color: colors.$accent-blue;
+        padding: $padding;
+        margin-bottom: $margin;
+        box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    &__part-one {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        order: 1;
+        margin-bottom: $margin;
+    }
+    
+    &__part-two {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        order: 3;
+        margin-bottom: $margin;
+    }
+
+    &__part-three {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        order: 4;
+    }
+
+    &__part-four {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        order: 2;
+    }
+
+    &__buttons {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        order: 5;
+    }
+
+    &__title {
+        font: $mLabels;
+        color: colors.$ink-2;
+    }
+
+    // &__name {}
+    &__link {
+        font: $mBodyLarge;
+        font-weight: 700;
+        text-decoration: none;
+        color: colors.$ink-1;
+    }
+
+    &__departure {
+        font: $mBodyLarge;
+    }
+
+    &__return {
+        font: $mBodyLarge;
+    }
+
+    &__location {
+        font: $mBodyLarge;
+    }
+
+    &__edit-link {
+        @include form-button;
+    }
+    &__delete {
+        @include form-button;
+    }
+}

@@ -93,9 +93,11 @@ function AddTripPage() {
             add_info
         } = values;
 
-        // Format date for MySQL Database
+        // Format date for MySQL Database YYYY-MM-DD HH:MM:SS
         const formatDate = (date) => {
-            return new Date(date).toISOString().slice(0, 19).replace('T', ' ');
+            const aDate = date.replace('T', ' ');
+            const newDate = aDate + ':00';
+            return newDate;
         };
 
         // Format phone number to 000-000-0000 for each object of an array for Database storage

@@ -55,6 +55,32 @@
     }
 }
 
+@mixin form-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background-color: colors.$ink-6;
+    color: colors.$ink-1;
+    border: 1px solid colors.$ink-1;
+    border-radius: $border-radius;
+    padding: 0 $padding;
+    width: auto;
+    height: 36px;
+    font: $mBodyLarge;
+    font-weight: 700;
+
+    &:hover {
+        background-color: colors.$ink-2;
+    }
+
+    // @include tablet {
+    //     width: auto;
+    //     height: 58px;
+    //     font: $tSubheader;
+    // }
+}
+
 // FORM INPUT STYLES
 @mixin primary-input {
     display: flex;
