@@ -38,7 +38,113 @@
         font: $mBodyLarge;
     }
 
+    &__logout-icon {
+        cursor: pointer;
+        margin-left: $margin;
+    }
+
     &__button {
         
     }
+}
+
+.profile-trips {
+    display: flex;
+    flex-direction: column;
+    margin-top: $margin;
+    padding: $padding;
+    background-color: colors.$accent-blue;
+    border-radius: $border-radius*2;
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: $margin;
+    }
+
+    &__title {
+        font: $mSubheader;
+        margin-bottom: $margin;
+    }
+
+    &__btn {
+        @include primary-button;
+    }
+}
+
+.trip-list {
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+        display: flex;
+        flex-wrap: wrap;
+        padding: $padding 0;
+        border-bottom: 1px solid black;
+    }
+
+    &__part-one {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        order: 1;
+        margin-bottom: $margin;
+    }
+    
+    &__part-two {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        order: 3;
+        margin-bottom: $margin;
+    }
+
+    &__part-three {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        order: 4;
+    }
+
+    &__part-four {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        order: 2;
+    }
+
+    &__buttons {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        order: 5;
+    }
+
+    &__title {
+        font: $mLabels;
+        color: colors.$ink-2;
+    }
+
+    // &__name {}
+    &__link {
+        font: $mBodyLarge;
+        font-weight: 700;
+        text-decoration: none;
+        color: colors.$ink-1;
+    }
+
+    &__departure {
+        font: $mBodyLarge;
+    }
+
+    &__return {
+        font: $mBodyLarge;
+    }
+
+    &__location {
+        font: $mBodyLarge;
+    }
+
+    &__edit-link {}
+    &__delete {}
 }

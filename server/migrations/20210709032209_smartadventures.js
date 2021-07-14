@@ -20,16 +20,17 @@ exports.up = function (knex) {
                 .inTable('users')
                 .onUpdate('CASCADE')
                 .onDelete('CASCADE');
-            table.json('participants').notNullable();
-            table.json('emergency_contacts').notNullable();
-            table.datetime('departure_date').notNullable();
-            table.datetime('return_date').notNullable();
-            table.string('location').notNullable();
-            table.string('purpose').notNullable();
-            table.json('activities').notNullable();
-            table.json('supplies').notNullable();
-            table.string('add_info').notNullable();
+            table.json('participants');
+            table.json('emergency_contacts');
+            table.datetime('departure_date');
+            table.datetime('return_date');
+            table.string('location');
+            table.string('purpose');
+            table.json('activities');
+            table.json('supplies');
+            table.string('add_info');
             table.json('comments')
+            table.boolean('flag').defaultTo(false);
             table.timestamp('updated_at').defaultTo(knex.fn.now());
         });
 };
