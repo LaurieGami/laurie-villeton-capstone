@@ -2,6 +2,7 @@ import './App.scss';
 
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
+import Header from './components/Header/Header';
 import HomePage from './pages/HomePage/HomePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import LoginPage from './pages/LoginPage/LoginPage';
@@ -13,7 +14,7 @@ import AddTripPage from './pages/AddTripPage/AddTripPage';
 function App() {
     return (
       <BrowserRouter>
-        {/* <Header /> */}
+        <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/register" component={RegisterPage} />

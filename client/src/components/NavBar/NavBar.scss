@@ -6,25 +6,29 @@
     display: flex;
     justify-content: space-evenly;
     width: 100%;
-    background-color: colors.$accent-orange;
+    // background-color: colors.$ink-5;
     padding: $padding*0.5;
-    border-radius: 0 0 $border-radius*2 $border-radius*2;
     // position: fixed;
 
     &__link {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
         text-decoration: none;
         color: colors.$ink-1;
         font: $mBodyLarge;
+        padding: $padding*0.5;
+        width: 68px;
+        height: 68px;
+        border-radius: $border-radius*2;
 
-        &--active {
-            color: colors.$ink-3;
+        &--active-trips {
+            background-color: colors.$accent-pink;
         }
 
-        &--active img {
-            filter: invert(79%) sepia(11%) saturate(300%) hue-rotate(165deg) brightness(93%) contrast(85%);
+        &--active-profile {
+            background-color: colors.$accent-yellow;
         }
     }
 

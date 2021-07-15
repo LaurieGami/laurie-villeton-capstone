@@ -8,13 +8,13 @@ import locationIcon from '../../assets/icons/location-icon.svg';
 function NavBar() {
     return (
         <nav className="navbar">
-            <NavLink to="/trips" className="navbar__link" activeClassName="navbar__link--active">
+            <NavLink to="/trips" className="navbar__link" activeClassName="navbar__link--active-trips">
                 <div className="navbar__icon-container">
                     <img src={locationIcon} alt="Location Icon" className="navbar__icon" />
                 </div>
                 <p className="navbar__text">Trips</p>
             </NavLink>
-            <NavLink to="/profile" className="navbar__link" activeClassName="navbar__link--active">
+            <NavLink to="/profile" className="navbar__link" activeClassName="navbar__link--active-profile">
                 <div className="navbar__icon-container">
                     <img src={avatarIcon} alt="Avatar Icon" className="navbar__icon" />
                 </div>

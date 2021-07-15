@@ -86,23 +86,24 @@ class TripsListPage extends Component {
                     {userTrips.map(trip => {
                         return (
                             <div key={trip.id} className="trip-list__item">
-                                <div className="trip-list__part-one">
-                                    <h4 className="trip-list__title">Trip Name</h4>
-                                    <Link to={`/trips/${trip.id}`} className="trip-list__link">
-                                        <p className="trip-list__name">{trip.name}</p>
-                                    </Link>
-                                </div>
-                                <div className="trip-list__part-two">
-                                    <h4 className="trip-list__title">Departure Date</h4>
-                                    <p className="trip-list__departure">{dateToLocale(trip.departure_date)}</p>
-                                </div>
-                                <div className="trip-list__part-three">
-                                    <h4 className="trip-list__title">Return Date</h4>
-                                    <p className="trip-list__return">{dateToLocale(trip.return_date)}</p>
-                                </div>
-                                <div className="trip-list__part-four">
-                                    <h4 className="trip-list__title">Location</h4>
-                                    <p className="trip-list__location">{trip.location}</p>
+                                <div className="trip-list__info">
+                                    <div className="trip-list__part-one">
+                                        <Link to={`/trips/${trip.id}`} className="trip-list__link">
+                                            <p className="trip-list__name">{trip.name}</p>
+                                        </Link>
+                                    </div>
+                                    <div className="trip-list__part-two">
+                                        <h4 className="trip-list__title">Departure Date</h4>
+                                        <p className="trip-list__departure">{dateToLocale(trip.departure_date)}</p>
+                                    </div>
+                                    <div className="trip-list__part-three">
+                                        <h4 className="trip-list__title">Return Date</h4>
+                                        <p className="trip-list__return">{dateToLocale(trip.return_date)}</p>
+                                    </div>
+                                    <div className="trip-list__part-four">
+                                        <h4 className="trip-list__title">Location</h4>
+                                        <p className="trip-list__location">{trip.location}</p>
+                                    </div>
                                 </div>
                                 <div className="trip-list__buttons">
                                     <Link to={`/trips/${trip.id}/edit`} className="trip-list__edit-link">

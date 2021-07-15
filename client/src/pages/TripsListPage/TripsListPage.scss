@@ -41,49 +41,55 @@
 
     &__item {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         border-radius: $border-radius*2;
         background-color: colors.$accent-blue;
-        padding: $padding;
         margin-bottom: $margin;
         box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+    }
+
+    &__info {
+        display: flex;
+        flex-wrap: wrap;
+        padding: $padding;
     }
 
     &__part-one {
         display: flex;
         flex-direction: column;
-        width: 50%;
+        width: 100%;
         order: 1;
-        margin-bottom: $margin;
+        margin-bottom: $margin*0.5;
     }
     
     &__part-two {
         display: flex;
         flex-direction: column;
-        width: 50%;
+        width: 33%;
         order: 3;
-        margin-bottom: $margin;
     }
 
     &__part-three {
         display: flex;
         flex-direction: column;
-        width: 50%;
+        width: 33%;
         order: 4;
     }
 
     &__part-four {
         display: flex;
         flex-direction: column;
-        width: 50%;
+        width: 33%;
         order: 2;
     }
 
     &__buttons {
         display: flex;
-        width: 100%;
         justify-content: space-between;
-        order: 5;
+        width: 100%;
+        padding: $padding;
+        background-color: colors.$ink-6;
     }
 
     &__title {
@@ -93,7 +99,7 @@
 
     // &__name {}
     &__link {
-        font: $mBodyLarge;
+        font: $mSubheader;
         font-weight: 700;
         text-decoration: none;
         color: colors.$ink-1;

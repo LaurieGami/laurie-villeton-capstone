@@ -1,0 +1,24 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/colors';
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $padding 0;
+
+    &__logo {
+        display: flex;
+        align-items: center;
+
+        &-icon {
+            width: 40px;
+        }
+
+        &-text {
+            margin-left: $margin*0.5;
+            font: $mPageHeader;
+        }
+    }
+}
