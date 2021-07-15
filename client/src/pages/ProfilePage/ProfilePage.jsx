@@ -1,6 +1,5 @@
 import "./ProfilePage.scss";
 import { Component } from "react";
-import { Link } from "react-router-dom";
 import axios from 'axios';
 import NavBar from "../../components/NavBar/NavBar";
 
@@ -9,8 +8,7 @@ const baseUrl = 'http://localhost:5000/api';
 class ProfilePage extends Component {
     state = {
         isLoading: true,
-        userInfo: {},
-        userTrips: []
+        userInfo: {}
     }
 
     handleAuthFail = () => {
@@ -31,37 +29,14 @@ class ProfilePage extends Component {
         }).catch(() => this.handleAuthFail());
     }
 
-    getUserTrips = (authToken) => {
-        axios.get(`${baseUrl}/trips`, {
-            headers: {
-                authorization: `Bearer ${authToken}`
-            }
-        }).then(res => {
-            this.setState({
-                isLoading: false,
-                userTrips: res.data
-            });
-        }).catch(() => this.handleAuthFail());
-    }
-
     componentDidMount() {
         const authToken = sessionStorage.getItem('authToken');
 
         this.getUserInfo(authToken);
-        this.getUserTrips(authToken);
     }
 
     render() {
-        const { isLoading, userInfo, userTrips } = this.state;
-
-        const dateToLocale = (date) => {
-            if (!date) {
-                return
-            }
-            const dateTime = new Date(date);
-            // return dateTime.toLocaleDateString() + " " + dateTime.toLocaleTimeString();
-            return dateTime.toLocaleDateString();
-        }
+        const { isLoading, userInfo } = this.state;
 
         if (isLoading) {
             <h1>Loading...</h1>

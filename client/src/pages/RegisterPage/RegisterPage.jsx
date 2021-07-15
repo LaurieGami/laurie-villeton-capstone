@@ -55,12 +55,7 @@ function RegisterPage() {
             password
         } = values;
 
-        const formattedPhone = phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
-
-        console.log(firstName,
-            lastName,
-            email,
-            formattedPhone);
+        const formattedPhone = "+1" + phone;
 
         axios.post(`${baseUrl}/register`, {
             firstName: firstName,

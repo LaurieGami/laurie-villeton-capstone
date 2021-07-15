@@ -71,13 +71,11 @@ function AddTripPage() {
                 })
             ),
         departure_date: Yup.date()
-            .min(new Date(), 'Departure Date must be in the future'),
+            .min(new Date(), 'Departure Date must be in the future')
+            .required('Required'),
         return_date: Yup.date()
-            .min(Yup.ref('departure_date'), 'Return Date must be later than Departure Date'),
-        // activities: Yup.array()
-        //     .min(1, 'Select at least 1 activity'),
-        // supplies: Yup.array()
-        //     .min(1, 'Select at least 1 supply'),
+            .min(Yup.ref('departure_date'), 'Return Date must be later than Departure Date')
+            .required('Required'),
         add_info: Yup.string()
             .min(2, 'Additional Info must be at least 2 characters')
             .max(255, 'Additional Info not belonger than 255 characters')
@@ -104,19 +102,11 @@ function AddTripPage() {
             return newDate;
         };
 
-        // Format phone number to 000-000-0000 for each object of an array for Database storage
-        const formatPhone = (peopleArray) => {
-            return peopleArray.map(person => {
-                person['phone'] = person.phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
-                return person;
-            });
-        };
-
         axios.post(`${baseUrl}/trips`,
             {
                 name: name,
-                participants: (participants ? formatPhone(participants) : [{ firstName: "", lastName: "", email: "", phone: "" }]),
-                emergency_contacts: (emergency_contacts ? formatPhone(emergency_contacts) : [{ firstName: "", lastName: "", email: "", phone: "" }]),
+                participants: participants,
+                emergency_contacts: emergency_contacts,
                 departure_date: (departure_date ? formatDate(departure_date) : ""),
                 return_date: (return_date ? formatDate(return_date) : ""),
                 location: location,
@@ -131,8 +121,8 @@ function AddTripPage() {
                 }
             }
         )
-            .then(res => {
-                console.log(res);
+            .then(() => {
+                history.push('/trips');
             })
             .catch((err) => setErrorMessage(err.response.data.message));
     }

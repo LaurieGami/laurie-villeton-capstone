@@ -1,5 +1,4 @@
 import "./Header.scss";
-import { NavLink } from 'react-router-dom';
 
 import compassIcon from '../../assets/icons/compass-icon.svg'
 

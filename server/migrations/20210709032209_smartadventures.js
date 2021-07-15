@@ -29,8 +29,9 @@ exports.up = function (knex) {
             table.json('activities');
             table.json('supplies');
             table.string('add_info');
-            table.json('comments')
-            table.boolean('flag').defaultTo(false);
+            table.json('comments');
+            // table.boolean('min_info');
+            table.string('trip_status').defaultTo('inactive');
             table.timestamp('updated_at').defaultTo(knex.fn.now());
         });
 };

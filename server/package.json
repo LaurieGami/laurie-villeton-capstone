@@ -18,6 +18,8 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.6",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.9"
+    "nodemon": "^2.0.9",
+    "twilio": "^3.66.0",
+    "twilio-cli": "^2.26.0"
   }
 }

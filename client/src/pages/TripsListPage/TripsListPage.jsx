@@ -5,9 +5,6 @@ import axios from 'axios';
 
 import NavBar from "../../components/NavBar/NavBar";
 
-import accountIcon from '../../assets/icons/account-user.svg';
-
-
 const baseUrl = 'http://localhost:5000/api';
 
 class TripsListPage extends Component {
