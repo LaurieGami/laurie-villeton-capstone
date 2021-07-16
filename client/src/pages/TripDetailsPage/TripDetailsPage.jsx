@@ -6,14 +6,28 @@ import axios from 'axios';
 import NavBar from "../../components/NavBar/NavBar";
 
 const baseUrl = 'http://localhost:5000/api';
-const authToken = sessionStorage.getItem('authToken');
 
 class TripDetailsPage extends Component {
     state = {
         isLoggedIn: false,
         isLoading: true,
         // userInfo: {},
-        tripDetails: {}
+        tripDetails: {
+            id: null,
+            name: null,
+            participants: [],
+            emergency_contacts: [],
+            departure_date: null,
+            return_date: null,
+            location: null,
+            purpose: null,
+            activities: [],
+            supplies: [],
+            add_info: null,
+            comments: [],
+            trip_status: "inactive",
+            updated_at: null
+        }
     }
 
     handleAuthFail = () => {
@@ -42,13 +56,33 @@ class TripDetailsPage extends Component {
             .then(res => {
                 this.setState({
                     isLoading: false,
-                    tripDetails: res.data
+
+                    tripDetails: {
+                            id: res.data.id,
+                            name: res.data.name,
+                            participants: JSON.parse(res.data.participants),
+                            emergency_contacts: JSON.parse(res.data.emergency_contacts),
+                            departure_date: res.data.departure_date,
+                            return_date: res.data.return_date,
+                            location: res.data.location,
+                            purpose: res.data.purpose,
+                            activities: JSON.parse(res.data.activities),
+                            supplies: JSON.parse(res.data.supplies),
+                            add_info: res.data.add_info,
+                            comments: JSON.parse(res.data.comments),
+                            trip_status: res.data.trip_status,
+                            updated_at: res.data.updated_at
+                        }
+                    
                 });
+                console.log(res.data);
             })
             .catch((err) => console.log("Couldn't retrieve trip information", err));
     }
 
     setStatus = (tripId, value) => {
+        const authToken = sessionStorage.getItem('authToken');
+
         axios.put(`${baseUrl}/trips/${tripId}`,
             {
                 trip_status: value
@@ -59,10 +93,10 @@ class TripDetailsPage extends Component {
                 }
             }
         )
-            .then(() => {
-                this.getTripInfo(tripId);
-            })
-            .catch((err) => console.log(err.response.data.message));
+        .then(() => {
+            this.getTripInfo(tripId);
+        })
+        .catch((err) => console.log(err.response.data.message));
 
     }
 
@@ -159,11 +193,20 @@ class TripDetailsPage extends Component {
                                     </div>
                                     <div className="trip-details__part-one">
                                         <h4 className="trip-details__title">Participants</h4>
-                                        <p className="trip-details__">{participants}</p>
+                                        <p className="trip-details__">{participants.map(participant => {
+                                            return (
+                                                <>
+                                                    <div>{participant.firstName}</div>
+                                                    <div>{participant.lastName}</div>
+                                                    <div>{participant.email}</div>
+                                                    <div>{participant.phone}</div>
+                                                </>
+                                            )
+                                            })}</p>
                                     </div>
                                     <div className="trip-details__part-two">
                                         <h4 className="trip-details__title">Emergency Contacts</h4>
-                                        <p className="trip-details__">{emergency_contacts}</p>
+                                        {/* <p className="trip-details__">{emergency_contacts}</p> */}
                                     </div>
                                     <div className="trip-details__part-three">
                                         <h4 className="trip-details__title">Departure Date</h4>
@@ -185,11 +228,11 @@ class TripDetailsPage extends Component {
                                     </div>
                                     <div className="trip-details__part-seven">
                                         <h4 className="trip-details__title">Activities</h4>
-                                        <p className="trip-details__activities">{activities}</p>
+                                        {/* <p className="trip-details__activities">{activities}</p> */}
                                     </div>
                                     <div className="trip-details__part-eight">
                                         <h4 className="trip-details__title">Supplies</h4>
-                                        <p className="trip-details__supplies">{supplies}</p>
+                                        {/* <p className="trip-details__supplies">{supplies}</p> */}
                                     </div>
                                     <div className="trip-details__part-nine">
                                         <h4 className="trip-details__title">Additional Information</h4>
