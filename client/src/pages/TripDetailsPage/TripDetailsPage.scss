@@ -32,5 +32,30 @@
         padding: $padding;
     }
 
+    &__buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: $padding;
+        background-color: colors.$ink-6;
+    }
+
+    &__status {
+        display: flex;
+        align-items: center;
+
+        &-inactive {
+            @include trip-status-inactive;
+        }
+
+        &-active {
+            @include trip-status-active;
+        }
+
+        &-completed {
+            @include trip-status-completed;
+
+        }
+    }
 
 }

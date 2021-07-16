@@ -1,6 +1,8 @@
 import "./TripDetailsPage.scss";
 import { Component } from "react";
 import { Link } from "react-router-dom";
+// import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
+// import * as Yup from 'yup';
 import axios from 'axios';
 
 import NavBar from "../../components/NavBar/NavBar";
@@ -24,7 +26,6 @@ class TripDetailsPage extends Component {
             activities: [],
             supplies: [],
             add_info: null,
-            comments: [],
             trip_status: "inactive",
             updated_at: null
         }
@@ -69,13 +70,10 @@ class TripDetailsPage extends Component {
                             activities: JSON.parse(res.data.activities),
                             supplies: JSON.parse(res.data.supplies),
                             add_info: res.data.add_info,
-                            comments: JSON.parse(res.data.comments),
                             trip_status: res.data.trip_status,
                             updated_at: res.data.updated_at
                         }
-                    
                 });
-                console.log(res.data);
             })
             .catch((err) => console.log("Couldn't retrieve trip information", err));
     }
@@ -114,6 +112,7 @@ class TripDetailsPage extends Component {
 
     render() {
         const { isLoggedIn, isLoading, tripDetails } = this.state;
+
         const { id,
             name,
             participants,
@@ -125,26 +124,21 @@ class TripDetailsPage extends Component {
             activities,
             supplies,
             add_info,
-            comments,
             trip_status,
             updated_at } = tripDetails;
 
-        // const toJson = (value) => {
-        //     return JSON.parse(value);
-        // }
-
         const dateToLocale = (date) => {
-            if (!date) {
-                return
-            }
+            // if (!date) {
+            //     return
+            // }
             const dateTime = new Date(date);
             return dateTime.toLocaleDateString();
         }
 
         const timeToLocale = (date) => {
-            if (!date) {
-                return
-            }
+            // if (!date) {
+            //     return
+            // }
             const dateTime = new Date(date);
             return dateTime.toLocaleTimeString();
         }
@@ -157,56 +151,72 @@ class TripDetailsPage extends Component {
                 <main className="trip-details-page">
                     <section className="trip-details-page__header">
                         <h1 className="trip-details-page__title">Trip Details</h1>
+                        {isLoggedIn &&
+                            <Link to={`/trips/${id}/edit`} className="trip-details__edit-link">
+                                Edit
+                            </Link>
+                        }
                         {!isLoading && isLoggedIn &&
-                            <>
-                                <div>Mark as: {statusList.filter(status => status !== trip_status).map((status, index) => {
-                                    return (
-                                        <span key={index} onClick={() => this.setStatus(id, status)}> {status} </span>
-                                    )
-                                })}</div>
-                                <div className="trip-details-page__buttons">
-                                    <Link to={`/trips/${id}/edit`} className="trip-details-page__edit-link">
-                                        Edit
-                                    </Link>
-                                    <button className="trip-details-page__delete">
-                                        Delete
-                                    </button>
+                            <div className="trip-details__buttons">
+                                <div className="trip-details__status">Mark as:
+                                    {statusList.filter(status => status !== trip_status).map((status, index) => {
+                                        return (
+                                            <span
+                                                key={index}
+                                                onClick={() => this.setStatus(id, status)}
+                                                className={`trip-details__status-${status}`}
+                                            >
+                                                {status}
+                                            </span>
+                                        )
+                                    })
+                                    }
                                 </div>
-                            </>
+                            </div>
                         }
                     </section>
 
                     <article className="trip-details">
-                        <div className="trip-details__info">
-                            {/*  */}
-                            {isLoading &&
-                                <h2 className="trip-details__loading">Loading...</h2>
-                            }
+                        {isLoading &&
+                            // Loading
+                            <h2 className="trip-details__loading">Loading...</h2>
+                        }
 
-                            {/* Single Trip Component */}
-                            {!isLoading &&
-                                <>
+                        {/* Single Trip Component */}
+                        {!isLoading &&
+                            <>
+                                <div className="trip-details__info">
                                     <div className="trip-details__header">
                                         <div className="trip-details__status">{trip_status}</div>
                                         <h3 className="trip-details__title">{name}</h3>
                                         <p className="trip-details__date">Last Updated: {dateToLocale(updated_at) + " " + timeToLocale(updated_at)}</p>
+                                        
                                     </div>
                                     <div className="trip-details__part-one">
                                         <h4 className="trip-details__title">Participants</h4>
-                                        <p className="trip-details__">{participants.map(participant => {
+                                        {participants.map((participant, index) => {
                                             return (
-                                                <>
-                                                    <div>{participant.firstName}</div>
-                                                    <div>{participant.lastName}</div>
-                                                    <div>{participant.email}</div>
-                                                    <div>{participant.phone}</div>
-                                                </>
+                                                <div className="trip-details__" key={index}>
+                                                    <p>{participant.firstName}</p>
+                                                    <p>{participant.lastName}</p>
+                                                    <p>{participant.email}</p>
+                                                    <p>{participant.phone}</p>
+                                                </div>
                                             )
-                                            })}</p>
+                                        })}
                                     </div>
                                     <div className="trip-details__part-two">
                                         <h4 className="trip-details__title">Emergency Contacts</h4>
-                                        {/* <p className="trip-details__">{emergency_contacts}</p> */}
+                                        {emergency_contacts.map((emergency_contact, index) => {
+                                            return (
+                                                <div className="trip-details__" key={index}>
+                                                    <p>{emergency_contact.firstName}</p>
+                                                    <p>{emergency_contact.lastName}</p>
+                                                    <p>{emergency_contact.email}</p>
+                                                    <p>{emergency_contact.phone}</p>
+                                                </div>
+                                            )
+                                        })}
                                     </div>
                                     <div className="trip-details__part-three">
                                         <h4 className="trip-details__title">Departure Date</h4>
@@ -228,25 +238,45 @@ class TripDetailsPage extends Component {
                                     </div>
                                     <div className="trip-details__part-seven">
                                         <h4 className="trip-details__title">Activities</h4>
-                                        {/* <p className="trip-details__activities">{activities}</p> */}
+                                        {activities.map((activity, index) => {
+                                            return (
+                                                <div className="trip-details__" key={index}>
+                                                    {activity}
+                                                </div>
+                                            )
+                                        })}
                                     </div>
                                     <div className="trip-details__part-eight">
                                         <h4 className="trip-details__title">Supplies</h4>
-                                        {/* <p className="trip-details__supplies">{supplies}</p> */}
+                                        {supplies.map((supply, index) => {
+                                            return (
+                                                <div className="trip-details__" key={index}>
+                                                    {supply}
+                                                </div>
+                                            )
+                                        })}
                                     </div>
                                     <div className="trip-details__part-nine">
                                         <h4 className="trip-details__title">Additional Information</h4>
                                         <p className="trip-details__add-info">{add_info}</p>
                                     </div>
-                                    <div className="trip-details__comments-list">
-                                        <h4 className="trip-details__title">Comments</h4>
-                                        <div className="trip-details__comments">
-                                            {comments ? comments : "(no comments yet)"}
-                                        </div>
+                                    
+                                </div>
+                                {/* <div className="trip-details__comments-list">
+                                    <h4 className="trip-details__title">Comments</h4>
+                                    <div className="trip-details__comments">
+                                    {comments.map((comment, index) => {
+                                            return (
+                                                <div className="trip-details__" key={index}>
+                                                    <p>{comment.name}</p>
+                                                    <p>{comment.comment}</p>
+                                                </div>
+                                            )
+                                        })}
                                     </div>
-                                </>
-                            }
-                        </div>
+                                </div> */}
+                            </>
+                        }
                     </article>
                 </main>
             </>

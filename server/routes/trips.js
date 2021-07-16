@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Trip = require('../models/trip');
+const Comment = require('../models/comment');
 
 const authorize = require('../middlewares/auth');
 
@@ -66,6 +67,20 @@ router.route('/trips/:tripId')
                     res.status(400).json({ message: `Error, can't update trip ${req.params.tripId} of user ${req.decoded.id}`, error: err })
                 })
             });
+    })
+    .delete(authorize, (req, res) => {
+        Trip.where({ user_id: req.decoded.id, id: req.params.tripId })
+            .destroy()
+            .then(() => {
+                res.status(200).json({
+                    message: `Trip ${req.params.tripId} deleted successfully`
+                })
+            })
+            .catch(() => {
+                res.status(400).json({
+                    message: "Error, can't delete this trip"
+                })
+            });
     });
 
 // Access does not require "authorize" as it should be accessible for everyone at this point in time
@@ -79,6 +94,6 @@ router.route('/trips/:tripId')
         .catch((err) =>
             res.status(400).json({ message: `Error getting trip ${req.params.tripId}`, error: err })
         );
-})
+});
 
 module.exports = router;

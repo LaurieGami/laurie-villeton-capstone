@@ -2,8 +2,11 @@ const bookshelf = require('../bookshelf');
 
 const Trip = bookshelf.model('Trip', {
     tableName: 'trips',
-    warehouse: function () {
+    user: function () {
         return this.belongsTo('User');
+    },
+    comments: function () {
+        return this.hasMany('Comment');
     },
 });
 

@@ -165,3 +165,26 @@
     @include error-notification;
     background-color: colors.$warning-bg;
 }
+
+// TRIP STATUS
+@mixin trip-status-inactive {
+    color: colors.$ink-1;
+    background-color: colors.$warning;
+    padding: 0 $padding;
+    font: $mBodyLarge;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    border-radius: $border-radius*4;
+    margin: 0 $margin*0.5;
+}
+
+@mixin trip-status-active {
+    @include trip-status-inactive;
+    background-color: colors.$info;
+}
+
+@mixin trip-status-completed {
+    @include trip-status-inactive;
+    background-color: colors.$success;
+}

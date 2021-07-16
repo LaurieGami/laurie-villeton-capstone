@@ -29,13 +29,27 @@ exports.up = function (knex) {
             table.json('activities');
             table.json('supplies');
             table.string('add_info');
-            table.json('comments');
+            // table.json('comments');
             // table.boolean('min_info');
             table.string('trip_status').defaultTo('inactive');
             table.timestamp('updated_at').defaultTo(knex.fn.now());
+        })
+        .createTable('comments', (table) => {
+            table.increments('id').primary();
+            table.string('username').notNullable();
+            table.string('comment');
+            table
+                .integer('trip_id')
+                .unsigned()
+                .notNullable()
+                .references('id')
+                .inTable('trips')
+                .onUpdate('CASCADE')
+                .onDelete('CASCADE');
+            table.timestamp('posted_at').defaultTo(knex.fn.now());
         });
 };
 
 exports.down = function (knex) {
-    return knex.schema.dropTable('trips').dropTable('users');
+    return knex.schema.dropTable('comments').dropTable('trips').dropTable('users');
 };

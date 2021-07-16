@@ -14,38 +14,13 @@ const baseUrl = 'http://localhost:5000/api';
 
 function AddTripPage() {
     const [isLoading, setIsLoading] = useState(true);
-    const [userInfo, setUserInfo] = useState({});
     const [errorMessage, setErrorMessage] = useState('');
 
     let history = useHistory();
-    const authToken = sessionStorage.getItem('authToken');
 
     useEffect(() => {
-        if (!authToken) {
-            handleAuthFail();
-        }
-
-        getUserInfo(authToken);
         setIsLoading(false);
-    }, [authToken, history]);
-
-    const handleAuthFail = () => {
-        sessionStorage.removeItem('authToken');
-        return history.push(`/`);
-    }
-
-    const getUserInfo = (authToken) => {
-        axios.get(`${baseUrl}/profile`, {
-            headers: {
-                authorization: `Bearer ${authToken}`
-            }
-        })
-            .then(res => {
-                setIsLoading(false);
-                setUserInfo(res.data);
-            })
-            .catch(() => handleAuthFail());
-    }
+    }, [history]);
 
     const AddTripSchema = Yup.object().shape({
         name: Yup.string()
@@ -82,6 +57,8 @@ function AddTripPage() {
     });
 
     const postTripInfo = (values) => {
+        const authToken = sessionStorage.getItem('authToken');
+
         const {
             name,
             participants,
