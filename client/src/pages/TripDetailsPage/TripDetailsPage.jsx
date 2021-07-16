@@ -139,22 +139,23 @@ class TripDetailsPage extends Component {
                     <section className="trip-details-page__header">
                         <h1 className="trip-details-page__title">Trip Details</h1>
                         {isLoggedIn &&
-                            <Link to={`/trips/${id}/edit`} className="trip-details__edit-link">
+                            <Link to={`/trips/${id}/edit`} className="trip-details-page__btn">
                                 Edit
                             </Link>
                         }
                         {!isLoading && isLoggedIn &&
-                            <div className="trip-details__buttons">
-                                <div className="trip-details__status">Mark as:
+                            <div className="trip-details-page__status">
+                                <h3 className="trip-details-page__status-title">Mark as:</h3>
+                                <div className="trip-details-page__status-buttons">
                                     {statusList.filter(status => status !== trip_status).map((status, index) => {
                                         return (
-                                            <span
+                                            <div
                                                 key={index}
                                                 onClick={() => this.setStatus(id, status)}
-                                                className={`trip-details__status-${status}`}
+                                                className={`trip-details-page__status--${status}`}
                                             >
                                                 {status}
-                                            </span>
+                                            </div>
                                         )
                                     })
                                     }
@@ -173,84 +174,105 @@ class TripDetailsPage extends Component {
                         {!isLoading &&
                             <>
                                 <div className="trip-details__info">
-                                    <div className="trip-details__header">
-                                        <div className="trip-details__status">{trip_status}</div>
-                                        <h3 className="trip-details__title">{name}</h3>
-                                        <p className="trip-details__date">Last Updated: {dateToLocale(updated_at) + " " + timeToLocale(updated_at)}</p>
-                                        
+
+                                    <div className="trip-details__section">
+                                        <div className="trip-details__header">
+                                            <h3 className="trip-details__name">{name}</h3>
+                                            <div className="trip-details__status-group">
+                                                <div className={`trip-details__status--${trip_status}`}>{trip_status}</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="trip-details__part-one">
-                                        <h4 className="trip-details__title">Participants</h4>
-                                        {participants.map((participant, index) => {
-                                            return (
-                                                <div className="trip-details__" key={index}>
-                                                    <p>{participant.firstName}</p>
-                                                    <p>{participant.lastName}</p>
-                                                    <p>{participant.email}</p>
-                                                    <p>{participant.phone}</p>
-                                                </div>
-                                            )
-                                        })}
+                                    <div className="trip-details__section">
+                                        <div className="trip-details__part-one">
+                                            <h3 className="trip-details__title">Participants</h3>
+                                            {participants.map((participant, index) => {
+                                                return (
+                                                    <div className="trip-details__" key={`participants-${index}`}>
+                                                        <h4 className="trip-details__subtitle">Participant {index + 1}</h4>
+                                                        <p>{participant.firstName}</p>
+                                                        <p>{participant.lastName}</p>
+                                                        <p>{participant.email}</p>
+                                                        <p>{participant.phone}</p>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
                                     </div>
-                                    <div className="trip-details__part-two">
-                                        <h4 className="trip-details__title">Emergency Contacts</h4>
-                                        {emergency_contacts.map((emergency_contact, index) => {
-                                            return (
-                                                <div className="trip-details__" key={index}>
-                                                    <p>{emergency_contact.firstName}</p>
-                                                    <p>{emergency_contact.lastName}</p>
-                                                    <p>{emergency_contact.email}</p>
-                                                    <p>{emergency_contact.phone}</p>
-                                                </div>
-                                            )
-                                        })}
+                                    <div className="trip-details__section">
+                                        <div className="trip-details__part-two">
+                                            <h3 className="trip-details__title">Emergency Contacts</h3>
+                                            {emergency_contacts.map((emergency_contact, index) => {
+                                                return (
+                                                    <div className="trip-details__" key={`emergency_contacts-${index}`}>
+                                                        <p>{emergency_contact.firstName}</p>
+                                                        <p>{emergency_contact.lastName}</p>
+                                                        <p>{emergency_contact.email}</p>
+                                                        <p>{emergency_contact.phone}</p>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
                                     </div>
-                                    <div className="trip-details__part-three">
-                                        <h4 className="trip-details__title">Departure Date</h4>
-                                        <p className="trip-details__departure">{dateToLocale(departure_date)}</p>
-                                        <p className="trip-details__departure">{timeToLocale(departure_date)}</p>
+                                    <div className="trip-details__section">
+                                        <div className="trip-details__part-three">
+                                            <h3 className="trip-details__title">Departure Date</h3>
+                                            <p className="trip-details__departure">{dateToLocale(departure_date)}</p>
+                                            <p className="trip-details__departure">{timeToLocale(departure_date)}</p>
+                                        </div>
                                     </div>
-                                    <div className="trip-details__part-four">
-                                        <h4 className="trip-details__title">Return Date</h4>
-                                        <p className="trip-details__return">{dateToLocale(return_date)}</p>
-                                        <p className="trip-details__departure">{timeToLocale(return_date)}</p>
+                                    <div className="trip-details__section">
+                                        <div className="trip-details__part-four">
+                                            <h3 className="trip-details__title">Return Date</h3>
+                                            <p className="trip-details__return">{dateToLocale(return_date)}</p>
+                                            <p className="trip-details__departure">{timeToLocale(return_date)}</p>
+                                        </div>
                                     </div>
-                                    <div className="trip-details__part-five">
-                                        <h4 className="trip-details__title">Location</h4>
-                                        <p className="trip-details__location">{location}</p>
+                                    <div className="trip-details__section">
+                                        <div className="trip-details__part-five">
+                                            <h3 className="trip-details__title">Location</h3>
+                                            <p className="trip-details__location">{location}</p>
+                                        </div>
                                     </div>
-                                    <div className="trip-details__part-six">
-                                        <h4 className="trip-details__title">Purpose</h4>
-                                        <p className="trip-details__purpose">{purpose}</p>
+                                    <div className="trip-details__section">
+                                        <div className="trip-details__part-six">
+                                            <h3 className="trip-details__title">Purpose</h3>
+                                            <p className="trip-details__purpose">{purpose}</p>
+                                        </div>
                                     </div>
-                                    <div className="trip-details__part-seven">
-                                        <h4 className="trip-details__title">Activities</h4>
-                                        {activities.map((activity, index) => {
-                                            return (
-                                                <div className="trip-details__" key={index}>
-                                                    {activity}
-                                                </div>
-                                            )
-                                        })}
+                                    <div className="trip-details__section">
+                                        <div className="trip-details__part-seven">
+                                            <h3 className="trip-details__title">Activities</h3>
+                                            {activities.map((activity, index) => {
+                                                return (
+                                                    <div className="trip-details__" key={index}>
+                                                        {activity}
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
                                     </div>
-                                    <div className="trip-details__part-eight">
-                                        <h4 className="trip-details__title">Supplies</h4>
-                                        {supplies.map((supply, index) => {
-                                            return (
-                                                <div className="trip-details__" key={index}>
-                                                    {supply}
-                                                </div>
-                                            )
-                                        })}
+                                    <div className="trip-details__section">
+                                        <div className="trip-details__part-eight">
+                                            <h3 className="trip-details__title">Supplies</h3>
+                                            {supplies.map((supply, index) => {
+                                                return (
+                                                    <div className="trip-details__" key={index}>
+                                                        {supply}
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
                                     </div>
-                                    <div className="trip-details__part-nine">
-                                        <h4 className="trip-details__title">Additional Information</h4>
-                                        <p className="trip-details__add-info">{add_info}</p>
+                                    <div className="trip-details__section">
+                                        <div className="trip-details__part-nine">
+                                            <h3 className="trip-details__title">Additional Information</h3>
+                                            <p className="trip-details__add-info">{add_info}</p>
+                                        </div>
                                     </div>
-                                    
                                 </div>
                                 <div className="trip-details__comments-list">
-                                    <h4 className="trip-details__title">Comments</h4>
+                                    <h3 className="trip-details__title">Comments</h3>
                                     <div className="trip-details__comments">
                                     {comments.map(comment => {
                                             return (
