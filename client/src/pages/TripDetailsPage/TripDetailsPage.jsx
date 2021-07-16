@@ -13,7 +13,7 @@ class TripDetailsPage extends Component {
     state = {
         isLoggedIn: false,
         isLoading: true,
-        // userInfo: {},
+
         tripDetails: {
             id: null,
             name: null,
@@ -27,7 +27,8 @@ class TripDetailsPage extends Component {
             supplies: [],
             add_info: null,
             trip_status: "inactive",
-            updated_at: null
+            updated_at: null,
+            comments: null
         }
     }
 
@@ -35,22 +36,6 @@ class TripDetailsPage extends Component {
         sessionStorage.removeItem('authToken');
         this.props.history.push(`/`);
     }
-
-    // getUserInfo = (authToken) => {
-    //     axios.get(`${baseUrl}/profile`, {
-    //         headers: {
-    //             authorization: `Bearer ${authToken}`
-    //         }
-    //     })
-    //     .then(res => {
-    //         this.setState({
-    //             isLoggedIn: true,
-    //             isLoading: false,
-    //             userInfo: res.data
-    //         });
-    //     })
-    //     .catch(() => this.handleAuthFail());
-    // }
 
     getTripInfo = (tripId) => {
         axios.get(`${baseUrl}/trips/${tripId}`)
@@ -71,7 +56,8 @@ class TripDetailsPage extends Component {
                             supplies: JSON.parse(res.data.supplies),
                             add_info: res.data.add_info,
                             trip_status: res.data.trip_status,
-                            updated_at: res.data.updated_at
+                            updated_at: res.data.updated_at,
+                            comments: res.data.comments
                         }
                 });
             })
@@ -125,7 +111,8 @@ class TripDetailsPage extends Component {
             supplies,
             add_info,
             trip_status,
-            updated_at } = tripDetails;
+            updated_at,
+            comments } = tripDetails;
 
         const dateToLocale = (date) => {
             // if (!date) {
@@ -262,19 +249,19 @@ class TripDetailsPage extends Component {
                                     </div>
                                     
                                 </div>
-                                {/* <div className="trip-details__comments-list">
+                                <div className="trip-details__comments-list">
                                     <h4 className="trip-details__title">Comments</h4>
                                     <div className="trip-details__comments">
-                                    {comments.map((comment, index) => {
+                                    {comments.map(comment => {
                                             return (
-                                                <div className="trip-details__" key={index}>
-                                                    <p>{comment.name}</p>
+                                                <div className="trip-details__" key={comment.id}>
+                                                    <p>{comment.username}</p>
                                                     <p>{comment.comment}</p>
                                                 </div>
                                             )
                                         })}
                                     </div>
-                                </div> */}
+                                </div>
                             </>
                         }
                     </article>

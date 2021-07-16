@@ -76,9 +76,10 @@ router.route('/trips/:tripId')
                     message: `Trip ${req.params.tripId} deleted successfully`
                 })
             })
-            .catch(() => {
+            .catch((err) => {
                 res.status(400).json({
-                    message: "Error, can't delete this trip"
+                    message: "Error, can't delete this trip",
+                    error: err
                 })
             });
     });
@@ -87,7 +88,7 @@ router.route('/trips/:tripId')
 router.route('/trips/:tripId')
 .get((req, res) => {
     Trip.where({ id: req.params.tripId })
-        .fetch()
+        .fetch({withRelated: ['comments']})
         .then((trip) => {
             res.status(200).json(trip);
         })
@@ -95,5 +96,21 @@ router.route('/trips/:tripId')
             res.status(400).json({ message: `Error getting trip ${req.params.tripId}`, error: err })
         );
 });
+
+router.route('/comments/:tripId')
+.post((req, res) => {
+    new Comment ({
+        username: req.body.username,
+        comment: req.body.comment,
+        trip_id: req.params.tripId
+    })
+        .save()
+        .then((newComment) => {
+            res.status(201).json(newComment);
+        })
+        .catch((err) =>
+            res.status(400).json({ message: `Error, can't create a new comment for trip ${req.params.tripId}`, error: err })
+        );
+})
 
 module.exports = router;
