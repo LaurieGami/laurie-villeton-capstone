@@ -53,7 +53,7 @@ class TripsListPage extends Component {
     }
 
     render() {
-        const { isLoading, userInfo, userTrips } = this.state;
+        const { isLoading, userTrips } = this.state;
 
         const dateToLocale = (date) => {
             if (!date) {

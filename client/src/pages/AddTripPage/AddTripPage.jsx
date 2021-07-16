@@ -105,8 +105,8 @@ function AddTripPage() {
         axios.post(`${baseUrl}/trips`,
             {
                 name: name,
-                participants: participants,
-                emergency_contacts: emergency_contacts,
+                participants: JSON.stringify(participants),
+                emergency_contacts: JSON.stringify(emergency_contacts),
                 departure_date: (departure_date ? formatDate(departure_date) : ""),
                 return_date: (return_date ? formatDate(return_date) : ""),
                 location: location,

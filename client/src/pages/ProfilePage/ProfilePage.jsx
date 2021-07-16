@@ -46,9 +46,13 @@ class ProfilePage extends Component {
             <>
             <NavBar />
             <main className="profile-page">
+
+                <section className="profile-page__header">
+                    <h1 className="profile-page__title">My Profile</h1>
+                </section>
+
                 {/* Profile Info Component */}
                 <article className="profile-info">
-                    <h3 className="profile-page__title">Your Profile</h3>
                     <section className="profile-info__header">
                         <h2 className="profile-info__name">{userInfo.firstName} {userInfo.lastName}</h2>
                         <div className="profile-info__buttons">

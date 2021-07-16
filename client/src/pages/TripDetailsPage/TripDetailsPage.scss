@@ -1,0 +1,36 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/colors';
+
+.trip-details-page {
+    padding: $padding;
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: $margin*1.5;
+    }
+
+    &__title {
+        font: $mPageHeader;
+        margin-bottom: $margin*0.5;
+    }
+}
+
+.trip-details {
+    display: flex;
+    flex-direction: column;
+    border-radius: $border-radius*2;
+    background-color: colors.$accent-blue;
+    margin-bottom: $margin;
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        padding: $padding;
+    }
+
+
+}

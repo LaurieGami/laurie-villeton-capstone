@@ -56,7 +56,8 @@ router.route('/trips/:tripId')
                     purpose: req.body.purpose,
                     activities: JSON.stringify(req.body.activities),
                     supplies: JSON.stringify(req.body.supplies),
-                    add_info: req.body.add_info
+                    add_info: req.body.add_info,
+                    trip_status: req.body.trip_status
                 })
                 .then((updatedTrip) => {
                     res.status(200).json(updatedTrip);
