@@ -72,6 +72,11 @@
         margin-bottom: $margin*0.5;
     }
 
+    &__textarea {
+        @include primary-textarea;
+        margin-bottom: $margin*0.5;
+    }
+
     &__checkbox{
 
         &-group {

@@ -163,3 +163,51 @@
         @include form-button-black;
     }
 }
+
+.trip-comments-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment {
+    display: flex;
+    flex-direction: column;
+    background-color: colors.$accent-orange;
+    border-radius: $border-radius*2;
+    margin-bottom: $margin;
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    padding: $padding;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    &__body {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    &__buttons {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    &__name {
+        font: $mBodyLarge;
+        font-weight: 700;
+    }
+
+    &__time {
+        font: $mBodyMedium;
+    }
+
+    &__text {
+        font: $mBodyLarge;
+    }
+
+    &__delete-btn {
+        @include form-button;
+    }
+}

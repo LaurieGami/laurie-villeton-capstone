@@ -368,7 +368,7 @@ function AddTripPage() {
                                 <div className="add-trip-form__info">
                                     <div className="add-trip-form__section-item">
                                         <label className="add-trip-form__label" htmlFor="purpose">Purpose</label>
-                                        <Field name="purpose" placeholder="Purpose" type="text" className="add-trip-form__input" />
+                                        <Field name="purpose" placeholder="Purpose" as="textarea" className="add-trip-form__textarea" />
                                         {errors.purpose && touched.purpose ? (
                                             <div className="add-trip-form__warning-message">
                                                 {errors.purpose}
@@ -412,36 +412,6 @@ function AddTripPage() {
                                 )}
                             </FieldArray>
 
-                            {/* <div className="add-trip-form__section">
-                                <div className="add-trip-form__info">
-                                    <div className="add-trip-form__section-item">
-                                        <h4 id="activities-group" className="add-trip-form__label">Activities</h4>
-                                        <div role="group" aria-labelledby="activities-group" className="add-trip-form__checkbox-container">
-                                            <label>
-                                                <Field type="checkbox" name="activities" value="Day Hike" className="add-trip-form__checkbox" />
-                                                Day Hike
-                                            </label>
-                                            <label>
-                                                <Field type="checkbox" name="activities" value="Overnight Hike" className="add-trip-form__checkbox" />
-                                                Overnight Hike
-                                            </label>
-                                            <label>
-                                                <Field type="checkbox" name="activities" value="Camping" className="add-trip-form__checkbox" />
-                                                Camping
-                                            </label>
-                                            <label>
-                                                <Field type="checkbox" name="activities" value="Mountain Biking" className="add-trip-form__checkbox" />
-                                                Mountain Biking
-                                            </label>
-                                            <label>
-                                                <Field type="checkbox" name="activities" value="Kayaking" className="add-trip-form__checkbox" />
-                                                Kayaking
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
-
                             <FieldArray name="supplies">
                                 {({ remove, push }) => (
                                     <div className="add-trip-form__section">
@@ -476,35 +446,11 @@ function AddTripPage() {
                                 )}
                             </FieldArray>
 
-                            {/* <div id="supplies-group">Supplies</div>
-                            <div role="group" aria-labelledby="supplies-group">
-                                <label>
-                                    <Field type="checkbox" name="supplies" value="First Aid Kit" />
-                                    First Aid Kit
-                                </label>
-                                <label>
-                                    <Field type="checkbox" name="supplies" value="Flashlight" />
-                                    Flashlight
-                                </label>
-                                <label>
-                                    <Field type="checkbox" name="supplies" value="Map & Compass" />
-                                    Map & Compass
-                                </label>
-                                <label>
-                                    <Field type="checkbox" name="supplies" value="Firestarter" />
-                                    Firestarter
-                                </label>
-                                <label>
-                                    <Field type="checkbox" name="supplies" value="Food & Water" />
-                                    Food & Water
-                                </label>
-                            </div> */}
-
                             <div className="add-trip-form__section">
                                 <div className="add-trip-form__info">
                                     <div className="add-trip-form__section-item">
                                         <label className="add-trip-form__label" htmlFor="add_info">Additional Information</label>
-                                        <Field name="add_info" placeholder="Additional Information" type="text" className="add-trip-form__input" />
+                                        <Field name="add_info" placeholder="Additional Information" as="textarea" className="add-trip-form__textarea" />
                                         {errors.add_info && touched.add_info ? (
                                             <div className="add-trip-form__warning-message">
                                                 {errors.add_info}

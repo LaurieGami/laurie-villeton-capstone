@@ -7,6 +7,8 @@ import axios from 'axios';
 
 import NavBar from "../../components/NavBar/NavBar";
 
+import { timeAgo, dateToLocale, timeToLocale } from '../../utils/date';
+
 const baseUrl = 'http://localhost:5000/api';
 
 class TripDetailsPage extends Component {
@@ -140,16 +142,6 @@ class TripDetailsPage extends Component {
             // updated_at,
             comments } = tripDetails;
 
-        const dateToLocale = (date) => {
-            const dateTime = new Date(date);
-            return dateTime.toLocaleDateString();
-        }
-
-        const timeToLocale = (date) => {
-            const dateTime = new Date(date);
-            return dateTime.toLocaleTimeString();
-        }
-
         const statusList = ['inactive', 'active', 'completed'];
 
         return (
@@ -225,6 +217,7 @@ class TripDetailsPage extends Component {
                                             {emergency_contacts.map((emergency_contact, index) => {
                                                 return (
                                                     <div className="trip-details__" key={`emergency_contacts-${index}`}>
+                                                        <h4 className="trip-details__subtitle">Emergency Contact {index + 1}</h4>
                                                         <p>{emergency_contact.firstName}</p>
                                                         <p>{emergency_contact.lastName}</p>
                                                         <p>{emergency_contact.email}</p>
@@ -338,12 +331,24 @@ class TripDetailsPage extends Component {
                                 </section>
                                 {comments.length > 0 && 
                                     <section className="trip-comments-list">
-                                        {comments.map(comment => {
+                                        {comments
+                                        .sort((a, b) => {
+                                            return new Date(b.posted_at) - new Date(a.posted_at);
+                                        })
+                                        .map(comment => {
                                             return (
-                                                <div className="trip-details__" key={comment.id}>
-                                                    <p>{comment.username}</p>
-                                                    <p>{comment.comment}</p>
-                                                    <p>{comment.posted_at}</p>
+                                                <div className="comment" key={comment.id}>
+                                                    <div className="comment__header">
+                                                        <h3 className="comment__name">{comment.username}</h3>
+                                                        <p className="comment__time">{timeAgo(comment.posted_at)}</p>
+                                                    </div>
+                                                    <div  className="comment__body">
+                                                        <p className="comment__text">{comment.comment}</p>
+                                                    </div>
+                                                    <div className="comment__buttons">
+                                                        <button className="comment__delete-btn">Delete</button>
+                                                        {/* <img onClick={() => this.handleClick(comment.id)} className="comment__like-btn" src={deleteIcon} alt="Delete Icon" /> */}
+                                                    </div>
                                                 </div>
                                             )
                                         })}
