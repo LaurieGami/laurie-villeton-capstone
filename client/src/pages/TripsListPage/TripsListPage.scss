@@ -55,33 +55,34 @@
         padding: $padding;
     }
 
-    &__part-one {
+    &__header {
         display: flex;
-        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
         width: 100%;
         order: 1;
         margin-bottom: $margin*0.5;
     }
+
+    &__status {
+        &--inactive {
+            @include trip-status-inactive;
+        }
+
+        &--active {
+            @include trip-status-active;
+        }
+
+        &--completed {
+            @include trip-status-completed;
+        }
+    }
     
-    &__part-two {
+    &__section {
         display: flex;
         flex-direction: column;
-        width: 33%;
+        width: 50%;
         order: 3;
-    }
-
-    &__part-three {
-        display: flex;
-        flex-direction: column;
-        width: 33%;
-        order: 4;
-    }
-
-    &__part-four {
-        display: flex;
-        flex-direction: column;
-        width: 33%;
-        order: 2;
     }
 
     &__buttons {

@@ -96,26 +96,25 @@ class TripsListPage extends Component {
                             <h1>Loading...</h1>
                         }
                         {!isLoading && 
-                            userTrips.map(trip => {
+                            userTrips
+                            // .filter(trip => trip.trip_status === "inactive")
+                            .map(trip => {
                                 return (
                                     <div key={trip.id} className="trip-list__item">
                                         <div className="trip-list__info">
-                                            <div className="trip-list__part-one">
+                                            <div className="trip-list__header">
                                                 <Link to={`/trips/${trip.id}`} className="trip-list__link">
                                                     <p className="trip-list__name">{trip.name}</p>
                                                 </Link>
+                                                <div className={`trip-list__status--${trip.trip_status}`}>{trip.trip_status}</div>
                                             </div>
-                                            <div className="trip-list__part-two">
+                                            <div className="trip-list__section">
                                                 <h4 className="trip-list__title">Departure Date</h4>
                                                 <p className="trip-list__departure">{dateToLocale(trip.departure_date)}</p>
                                             </div>
-                                            <div className="trip-list__part-three">
+                                            <div className="trip-list__section">
                                                 <h4 className="trip-list__title">Return Date</h4>
                                                 <p className="trip-list__return">{dateToLocale(trip.return_date)}</p>
-                                            </div>
-                                            <div className="trip-list__part-four">
-                                                <h4 className="trip-list__title">Location</h4>
-                                                <p className="trip-list__location">{trip.location}</p>
                                             </div>
                                         </div>
                                         <div className="trip-list__buttons">

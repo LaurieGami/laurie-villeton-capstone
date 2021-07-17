@@ -56,6 +56,9 @@ function AddTripPage() {
             .max(255, 'Additional Info not belonger than 255 characters')
     });
 
+    const activitiesList = ['Day Hike', 'Overnight Hike', 'Camping', 'Kayaking'];
+    const suppliesList = ['First Aid Kit', 'Flashlight', 'Map & Compass', 'Firestarter', 'Food & Water'];
+
     const postTripInfo = (values) => {
         const authToken = sessionStorage.getItem('authToken');
 
@@ -122,8 +125,8 @@ function AddTripPage() {
                         return_date: "",
                         location: "",
                         purpose: "",
-                        activities: ['Day Hike', 'Overnight Hike', 'Camping', 'Kayaking'],
-                        supplies: ['First Aid Kit', 'Flashlight', 'Map & Compass', 'Firestarter', 'Food & Water'],
+                        activities: [],
+                        supplies: [],
                         add_info: ""
                     }}
                     validationSchema={AddTripSchema}
@@ -385,21 +388,14 @@ function AddTripPage() {
                                             <div className="add-trip-form__section-item">
                                                 <label className="add-trip-form__label" id="checkbox-group">Activities</label>
                                                 <div className="add-trip-form__checkbox-group" role="group" aria-labelledby="checkbox-group">
-                                                    {initialValues.activities.length > 0 &&
-                                                        initialValues.activities.map((activity, index) => (
+                                                    {activitiesList.length > 0 &&
+                                                        activitiesList.map((activity, index) => (
                                                             <label className="add-trip-form__checkbox-item" key={index}>
                                                                 <Field
                                                                     className="add-trip-form__checkbox-check"
                                                                     name="activities"
                                                                     type="checkbox"
                                                                     value={activity}
-                                                                    onChange={e => {
-                                                                        if (e.target.checked) push(activity);
-                                                                        else {
-                                                                            const idx = values.activities.indexOf(activity);
-                                                                            remove(idx);
-                                                                        }
-                                                                    }}
                                                                 />
                                                                 <span className="add-trip-form__checkbox-text">{activity}</span>
                                                             </label>
@@ -419,21 +415,14 @@ function AddTripPage() {
                                             <div className="add-trip-form__section-item">
                                                 <label className="add-trip-form__label" id="checkbox-group">Supplies</label>
                                                 <div className="add-trip-form__checkbox-group" role="group" aria-labelledby="checkbox-group">
-                                                    {initialValues.supplies.length > 0 &&
-                                                        initialValues.supplies.map((supply, index) => (
+                                                    {suppliesList.length > 0 &&
+                                                        suppliesList.map((supply, index) => (
                                                             <label className="add-trip-form__checkbox-item" key={index}>
                                                                 <Field
                                                                     className="add-trip-form__checkbox-check"
                                                                     name="supplies"
                                                                     type="checkbox"
                                                                     value={supply}
-                                                                    onChange={e => {
-                                                                        if (e.target.checked) push(supply);
-                                                                        else {
-                                                                            const idx = values.supplies.indexOf(supply);
-                                                                            remove(idx);
-                                                                        }
-                                                                    }}
                                                                 />
                                                                 <span className="add-trip-form__checkbox-text">{supply}</span>
                                                             </label>
@@ -489,7 +478,7 @@ function AddTripPage() {
                 </Formik>
             </main>
         </>
-            )
+    )
 }
 
-            export default AddTripPage;
+export default AddTripPage;
