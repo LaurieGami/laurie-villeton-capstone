@@ -131,7 +131,7 @@ function AddTripPage() {
                         postTripInfo(values);
                     }}
                 >
-                    {({ values, initialValues, errors, touched, handleChange }) => (
+                    {({ values, initialValues, errors, touched }) => (
                         <Form className="add-trip-form">
 
                             <div className="add-trip-form__section">

@@ -121,6 +121,37 @@
         color: colors.$ink-1;
     }
 
+    &--invalid {
+        border: 1px solid colors.$error;
+    }
+}
+
+@mixin primary-textarea {
+    display: flex;
+    align-items: flex-start;
+    color: colors.$ink-1;
+    background-color: colors.$ink-6;
+    border: 1px solid colors.$ink-3;
+    border-radius: $border-radius;
+    padding: $padding*0.5 $padding;
+    width: 100%;
+    height: 100px;
+    font: $tBodyMedium;
+    margin-bottom: $margin;
+
+    &:focus {
+        outline: none;
+        border: 1px solid colors.$active; 
+    }
+
+    &:invalid {
+        outline: none;
+        border: 1px solid colors.$warning; 
+    }
+
+    &::placeholder {
+        color: colors.$ink-1;
+    }
 
     &--invalid {
         border: 1px solid colors.$error;

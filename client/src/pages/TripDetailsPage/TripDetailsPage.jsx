@@ -1,7 +1,7 @@
 import "./TripDetailsPage.scss";
 import { Component } from "react";
 import { Link } from "react-router-dom";
-// import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
+import { Formik, Form, Field } from 'formik';
 // import * as Yup from 'yup';
 import axios from 'axios';
 
@@ -26,7 +26,7 @@ class TripDetailsPage extends Component {
             activities: [],
             supplies: [],
             add_info: null,
-            trip_status: "inactive",
+            trip_status: null,
             updated_at: null,
             comments: null
         }
@@ -84,6 +84,26 @@ class TripDetailsPage extends Component {
 
     }
 
+    postComment = (values) => {
+        const {
+            username,
+            comment,
+            trip_id
+        } = values;
+
+        axios.post(`${baseUrl}/comments/${trip_id}`,
+            {
+                username: username,
+                comment: comment,
+                trip_id: trip_id
+            }
+        )
+        .then(() => {
+            this.props.history.push(`/trips/${trip_id}`);
+        })
+        .catch((err) => console.log(err.response.data.message));
+    }
+
     componentDidMount() {
         const authToken = sessionStorage.getItem('authToken');
 
@@ -94,6 +114,12 @@ class TripDetailsPage extends Component {
         }
 
         this.getTripInfo(this.props.match.params.tripId);
+    }
+
+    componentDidUpdate(_prevProps, prevState) {
+        if (this.state.tripDetails.comments !== prevState.tripDetails.comments) {
+            this.getTripInfo(this.props.match.params.tripId);
+        }
     }
 
     render() {
@@ -111,21 +137,15 @@ class TripDetailsPage extends Component {
             supplies,
             add_info,
             trip_status,
-            updated_at,
+            // updated_at,
             comments } = tripDetails;
 
         const dateToLocale = (date) => {
-            // if (!date) {
-            //     return
-            // }
             const dateTime = new Date(date);
             return dateTime.toLocaleDateString();
         }
 
         const timeToLocale = (date) => {
-            // if (!date) {
-            //     return
-            // }
             const dateTime = new Date(date);
             return dateTime.toLocaleTimeString();
         }
@@ -271,19 +291,64 @@ class TripDetailsPage extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="trip-details__comments-list">
-                                    <h3 className="trip-details__title">Comments</h3>
-                                    <div className="trip-details__comments">
-                                    {comments.map(comment => {
+                                <section className="trip-comments">
+                                    <h2 className="trip-comments__title">{comments.length} {comments.length > 1 ? "Comments" : "Comment"}</h2>
+                                    <Formik
+                                        initialValues={{
+                                            username: "",
+                                            comment: "",
+                                            trip_id: id
+                                        }}
+                                        // validationSchema={AddTripSchema}
+                                        onSubmit={(values, actions) => {
+                                            this.postComment(values);
+                                            actions.resetForm();
+                                        }}
+                                    >
+                                        {({ values, errors, touched }) => (
+                                            <Form className="trip-comments-form">
+                                                
+                                                <label className="trip-comments-form__label" htmlFor="username">Name</label>
+                                                <Field name="username" placeholder="Enter your name" type="text" className="trip-comments-form__input" />
+                                                {errors.username && touched.username ? (
+                                                    <div className="trip-comments-form__warning-message">
+                                                        {errors.username}
+                                                    </div>
+                                                ) : null}
+                                            
+                                                <label className="trip-comments-form__label" htmlFor="comment">Comment</label>
+                                                <Field name="comment" placeholder="Add a new comment" as="textarea" className="trip-comments-form__textarea" />
+                                                {errors.comment && touched.comment ? (
+                                                    <div className="trip-comments-form__warning-message">
+                                                        {errors.comment}
+                                                    </div>
+                                                ) : null}
+                                                    
+                                                <section className="trip-comments-form__buttons">
+                                                    <button
+                                                        className="trip-comments-form__btn"
+                                                        type="submit"
+                                                    >
+                                                        Comment
+                                                    </button>
+                                                </section>
+                                            </Form>
+                                        )}
+                                    </Formik>
+                                </section>
+                                {comments.length > 0 && 
+                                    <section className="trip-comments-list">
+                                        {comments.map(comment => {
                                             return (
                                                 <div className="trip-details__" key={comment.id}>
                                                     <p>{comment.username}</p>
                                                     <p>{comment.comment}</p>
+                                                    <p>{comment.posted_at}</p>
                                                 </div>
                                             )
                                         })}
-                                    </div>
-                                </div>
+                                    </section>
+                                }
                             </>
                         }
                     </article>

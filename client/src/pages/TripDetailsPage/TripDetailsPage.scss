@@ -116,3 +116,50 @@
         font: $mSubheader;
     }
 }
+
+.trip-comments {
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+        font: $mSubheader;
+        margin: $margin 0;
+    }
+}
+
+.trip-comments-form {
+    display: flex;
+    flex-direction: column;
+    background-color: colors.$accent-orange;
+    border-radius: $border-radius*2;
+    margin-bottom: $margin;
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    padding: $padding;
+
+    &__label {
+        font: $mBodyLarge;
+        font-weight: 700;
+    }
+
+    &__input {
+        @include primary-input;
+    }
+
+    &__textarea {
+        @include primary-textarea;
+    }
+
+    &__warning-message {
+        @include warning-notification;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: flex-end
+    }
+
+    &__btn {
+        @include form-button-black;
+    }
+}
