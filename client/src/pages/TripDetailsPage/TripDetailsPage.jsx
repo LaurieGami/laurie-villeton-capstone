@@ -2,7 +2,7 @@ import "./TripDetailsPage.scss";
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field } from 'formik';
-// import * as Yup from 'yup';
+import * as Yup from 'yup';
 import axios from 'axios';
 
 import NavBar from "../../components/NavBar/NavBar";
@@ -34,11 +34,6 @@ class TripDetailsPage extends Component {
         }
     }
 
-    handleAuthFail = () => {
-        sessionStorage.removeItem('authToken');
-        this.props.history.push(`/`);
-    }
-
     getTripInfo = (tripId) => {
         axios.get(`${baseUrl}/trips/${tripId}`)
             .then(res => {
@@ -66,25 +61,16 @@ class TripDetailsPage extends Component {
             .catch((err) => console.log("Couldn't retrieve trip information", err));
     }
 
-    setStatus = (tripId, value) => {
-        const authToken = sessionStorage.getItem('authToken');
-
-        axios.put(`${baseUrl}/trips/${tripId}`,
-            {
-                trip_status: value
-            },
-            {
-                headers: {
-                    authorization: `Bearer ${authToken}`
-                }
-            }
-        )
-        .then(() => {
-            this.getTripInfo(tripId);
-        })
-        .catch((err) => console.log(err.response.data.message));
-
-    }
+    PostCommentSchema = Yup.object().shape({
+        username: Yup.string()
+            .min(2, 'Your name must be at least 2 characters')
+            .max(50, 'Your name must not belonger than 50 characters')
+            .required('Required'),
+        comment: Yup.string()
+            .min(3, 'Comment must be at least 3 characters')
+            .max(255, 'Comment must not belonger than 255 characters')
+            .required('Required')
+    });
 
     postComment = (values) => {
         const {
@@ -101,7 +87,15 @@ class TripDetailsPage extends Component {
             }
         )
         .then(() => {
-            this.props.history.push(`/trips/${trip_id}`);
+            this.getTripInfo(trip_id);
+        })
+        .catch((err) => console.log(err.response.data.message));
+    }
+
+    deleteComment = (tripId, commentId) => {
+        axios.delete(`${baseUrl}/comments/${commentId}`)
+        .then(() => {
+            this.getTripInfo(tripId);
         })
         .catch((err) => console.log(err.response.data.message));
     }
@@ -116,12 +110,6 @@ class TripDetailsPage extends Component {
         }
 
         this.getTripInfo(this.props.match.params.tripId);
-    }
-
-    componentDidUpdate(_prevProps, prevState) {
-        if (this.state.tripDetails.comments !== prevState.tripDetails.comments) {
-            this.getTripInfo(this.props.match.params.tripId);
-        }
     }
 
     render() {
@@ -139,10 +127,7 @@ class TripDetailsPage extends Component {
             supplies,
             add_info,
             trip_status,
-            // updated_at,
             comments } = tripDetails;
-
-        const statusList = ['inactive', 'active', 'completed'];
 
         return (
             <>
@@ -154,25 +139,6 @@ class TripDetailsPage extends Component {
                             <Link to={`/trips/${id}/edit`} className="trip-details-page__btn">
                                 Edit
                             </Link>
-                        }
-                        {!isLoading && isLoggedIn &&
-                            <div className="trip-details-page__status">
-                                <h3 className="trip-details-page__status-title">Mark as:</h3>
-                                <div className="trip-details-page__status-buttons">
-                                    {statusList.filter(status => status !== trip_status).map((status, index) => {
-                                        return (
-                                            <div
-                                                key={index}
-                                                onClick={() => this.setStatus(id, status)}
-                                                className={`trip-details-page__status--${status}`}
-                                            >
-                                                {status}
-                                            </div>
-                                        )
-                                    })
-                                    }
-                                </div>
-                            </div>
                         }
                     </section>
 
@@ -292,7 +258,7 @@ class TripDetailsPage extends Component {
                                             comment: "",
                                             trip_id: id
                                         }}
-                                        // validationSchema={AddTripSchema}
+                                        validationSchema={this.PostCommentSchema}
                                         onSubmit={(values, actions) => {
                                             this.postComment(values);
                                             actions.resetForm();
@@ -346,7 +312,7 @@ class TripDetailsPage extends Component {
                                                         <p className="comment__text">{comment.comment}</p>
                                                     </div>
                                                     <div className="comment__buttons">
-                                                        <button className="comment__delete-btn">Delete</button>
+                                                        <button onClick={() => this.deleteComment(comment.trip_id, comment.id)} className="comment__delete-btn">Delete</button>
                                                         {/* <img onClick={() => this.handleClick(comment.id)} className="comment__like-btn" src={deleteIcon} alt="Delete Icon" /> */}
                                                     </div>
                                                 </div>

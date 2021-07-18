@@ -113,4 +113,21 @@ router.route('/comments/:tripId')
         );
 })
 
+router.route('/comments/:commentId')
+.delete((req, res) => {
+    Comment.where({ id: req.params.commentId })
+        .destroy()
+        .then(() => {
+            res.status(200).json({
+                message: `Comment ${req.params.commentId} deleted successfully`
+            })
+        })
+        .catch((err) => {
+            res.status(400).json({
+                message: "Error, can't delete this comment",
+                error: err
+            })
+        });
+});
+
 module.exports = router;

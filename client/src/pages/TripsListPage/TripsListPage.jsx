@@ -50,11 +50,11 @@ class TripsListPage extends Component {
 
         axios
             .delete(`${baseUrl}/trips/${tripId}`,
-            {
-                headers: {
-                    authorization: `Bearer ${authToken}`
-                }
-            })
+                {
+                    headers: {
+                        authorization: `Bearer ${authToken}`
+                    }
+                })
             .then(() => {
                 this.getUserTrips(authToken);
             })
@@ -95,9 +95,12 @@ class TripsListPage extends Component {
                         {isLoading &&
                             <h1>Loading...</h1>
                         }
-                        {!isLoading && 
+                        {!isLoading &&
                             userTrips
                             // .filter(trip => trip.trip_status === "inactive")
+                            .sort((a, b) => {
+                                return new Date(a.departure_date) - new Date(b.departure_date);
+                            })
                             .map(trip => {
                                 return (
                                     <div key={trip.id} className="trip-list__item">

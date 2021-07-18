@@ -1,8 +1,8 @@
-import "./AddTripPage.scss";
+import "./EditTripPage.scss";
 // import { Link } from "react-router-dom";
 
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -12,15 +12,60 @@ import plusIcon from "../../assets/icons/add-more-plus.svg";
 
 const baseUrl = 'http://localhost:5000/api';
 
-function AddTripPage() {
+function EditTripPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
+    const [tripDetails, setTripDetails] = useState({
+            name: "",
+            participants: [],
+            emergency_contacts: [],
+            departure_date: "",
+            return_date: "",
+            location: "",
+            purpose: "",
+            activities: [],
+            supplies: [],
+            add_info: "",
+            trip_status: "",
+    });
 
     let history = useHistory();
+    let params = useParams();
 
     useEffect(() => {
-        setIsLoading(false);
-    }, [history]);
+        getTripInfo(params.tripId)
+    }, [params.tripId]);
+
+    const getTripInfo = (tripId) => {
+        const unformatDate = (date) => {
+            const newDate = date.replace(':00.000Z', '');
+            return newDate;
+        };
+
+        axios.get(`${baseUrl}/trips/${tripId}`)
+            .then(res => {
+                setIsLoading(false);
+                setTripDetails(
+                    {
+                        id: res.data.id,
+                        name: res.data.name,
+                        participants: JSON.parse(res.data.participants),
+                        emergency_contacts: JSON.parse(res.data.emergency_contacts),
+                        departure_date: unformatDate(res.data.departure_date),
+                        return_date: unformatDate(res.data.return_date),
+                        location: res.data.location,
+                        purpose: res.data.purpose,
+                        activities: JSON.parse(res.data.activities),
+                        supplies: JSON.parse(res.data.supplies),
+                        add_info: res.data.add_info,
+                        trip_status: res.data.trip_status,
+                        updated_at: res.data.updated_at,
+                        comments: res.data.comments
+                    }
+                );
+            })
+            .catch((err) => console.log("Couldn't retrieve trip information", err));
+    }
 
     const AddTripSchema = Yup.object().shape({
         name: Yup.string()
@@ -58,8 +103,9 @@ function AddTripPage() {
 
     const activitiesList = ['Day Hike', 'Overnight Hike', 'Camping', 'Kayaking'];
     const suppliesList = ['First Aid Kit', 'Flashlight', 'Map & Compass', 'Firestarter', 'Food & Water'];
+    const statusList = ['inactive', 'active', 'completed'];
 
-    const postTripInfo = (values) => {
+    const editTripInfo = (values, tripId) => {
         const authToken = sessionStorage.getItem('authToken');
 
         const {
@@ -72,7 +118,8 @@ function AddTripPage() {
             purpose,
             activities,
             supplies,
-            add_info
+            add_info,
+            trip_status
         } = values;
 
         // Format date for MySQL Database YYYY-MM-DD HH:MM:SS
@@ -82,9 +129,7 @@ function AddTripPage() {
             return newDate;
         };
 
-        console.log(departure_date);
-
-        axios.post(`${baseUrl}/trips`,
+        axios.put(`${baseUrl}/trips/${tripId}`,
             {
                 name: name,
                 participants: participants,
@@ -95,7 +140,8 @@ function AddTripPage() {
                 purpose: purpose,
                 activities: activities,
                 supplies: supplies,
-                add_info: add_info
+                add_info: add_info,
+                trip_status: trip_status
             },
             {
                 headers: {
@@ -104,7 +150,7 @@ function AddTripPage() {
             }
         )
             .then(() => {
-                history.push('/trips');
+                history.push(`/trips/${tripId}`);
             })
             .catch((err) => setErrorMessage(err.response.data.message));
     }
@@ -112,41 +158,63 @@ function AddTripPage() {
     return (
         <>
             <NavBar />
-            <main className="add-trip-page">
+            <main className="edit-trip-page">
                 {isLoading &&
                     <h1>Loading...</h1>
                 }
-                <h1 className="add-trip-page__title">Let's start a new trip!</h1>
-                <p className="add-trip-page__text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea, omnis molestias! Eaque quibusdam, suscipit iste sapiente ducimus, soluta aperiam culpa nihil aliquid hic ea sed quaerat consequuntur quod ratione itaque?</p>
+                <h1 className="edit-trip-page__title">Edit your trip</h1>
+                <p className="edit-trip-page__text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea, omnis molestias! Eaque quibusdam, suscipit iste sapiente ducimus, soluta aperiam culpa nihil aliquid hic ea sed quaerat consequuntur quod ratione itaque?</p>
                 <Formik
-                    initialValues={{
-                        name: "",
-                        participants: [{ firstName: "", lastName: "", email: "", phone: "" }],
-                        emergency_contacts: [{ firstName: "", lastName: "", email: "", phone: "" }],
-                        departure_date: "",
-                        return_date: "",
-                        location: "",
-                        purpose: "",
-                        activities: [],
-                        supplies: [],
-                        add_info: ""
-                    }}
+                    // initialValues={{
+                    //     name: "",
+                    //     participants: [{ firstName: "", lastName: "", email: "", phone: "" }],
+                    //     emergency_contacts: [{ firstName: "", lastName: "", email: "", phone: "" }],
+                    //     departure_date: "",
+                    //     return_date: "",
+                    //     location: "",
+                    //     purpose: "",
+                    //     activities: [],
+                    //     supplies: [],
+                    //     add_info: ""
+                    // }}
+                    initialValues={tripDetails}
+                    enableReinitialize={true}
                     validationSchema={AddTripSchema}
                     onSubmit={values => {
-                        postTripInfo(values);
+                        editTripInfo(values, params.tripId);
                     }}
                 >
                     {({ values, initialValues, errors, touched }) => (
-                        <Form className="add-trip-form">
+                        <Form className="edit-trip-form">
 
-                            <div className="add-trip-form__section">
-                                <div className="add-trip-form__info">
-                                    <div className="add-trip-form__section-item">
-                                        <label className="add-trip-form__label" htmlFor="name">Trip Name</label>
-                                        <Field name="name" placeholder="Trip Name" type="text" className="add-trip-form__input" />
+                            <div className="edit-trip-form__section">
+                                <div className="edit-trip-form__info">
+                                    <div className="edit-trip-form__section-item">
+                                        <label className="edit-trip-form__label" htmlFor="name">Trip Name</label>
+                                        <Field name="name" placeholder="Trip Name" type="text" className="edit-trip-form__input" />
                                         {errors.name && touched.name ? (
-                                            <div className="add-trip-form__warning-message">
+                                            <div className="edit-trip-form__warning-message">
                                                 {errors.name}
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="edit-trip-form__section">
+                                <div className="edit-trip-form__info">
+                                    <div className="edit-trip-form__section-item">
+                                        <label className="edit-trip-form__label" htmlFor="trip_status">Trip Status</label>
+                                        <Field name="trip_status" as="select" className="edit-trip-form__input">
+                                            {statusList.map((status, index) => {
+                                                return (
+                                                <option key={index} value={status}>{status}</option>
+                                                )
+                                            })}
+                                        </Field>
+                                        {errors.trip_status && touched.trip_status ? (
+                                            <div className="edit-trip-form__warning-message">
+                                                {errors.trip_status}
                                             </div>
                                         ) : null}
                                     </div>
@@ -155,24 +223,24 @@ function AddTripPage() {
 
                             <FieldArray name="participants">
                                 {({ remove, push }) => (
-                                    <div className="add-trip-form__section">
-                                        <div className="add-trip-form__info">
+                                    <div className="edit-trip-form__section">
+                                        <div className="edit-trip-form__info">
                                             {values.participants.length > 0 &&
                                                 values.participants.map((participant, index) => (
-                                                    <div className="add-trip-form__section-item" key={index}>
-                                                        <h4 className="add-trip-form__label">{`Participant ${index + 1}`}</h4>
+                                                    <div className="edit-trip-form__section-item" key={index}>
+                                                        <h4 className="edit-trip-form__label">{`Participant ${index + 1}`}</h4>
                                                         <div className="col">
                                                             {/* <label htmlFor={`participants.${index}.firstName`}>First Name</label> */}
                                                             <Field
                                                                 name={`participants.${index}.firstName`}
                                                                 placeholder={`#${index + 1} Participant's First Name`}
                                                                 type="text"
-                                                                className="add-trip-form__input"
+                                                                className="edit-trip-form__input"
                                                             />
                                                             <ErrorMessage
                                                                 name={`participants.${index}.firstName`}
                                                                 component="div"
-                                                                className="add-trip-form__warning-message"
+                                                                className="edit-trip-form__warning-message"
                                                             />
                                                         </div>
                                                         <div className="col">
@@ -181,12 +249,12 @@ function AddTripPage() {
                                                                 name={`participants.${index}.lastName`}
                                                                 placeholder={`#${index + 1} Participant's Last Name`}
                                                                 type="text"
-                                                                className="add-trip-form__input"
+                                                                className="edit-trip-form__input"
                                                             />
                                                             <ErrorMessage
                                                                 name={`participants.${index}.lastName`}
                                                                 component="div"
-                                                                className="add-trip-form__warning-message"
+                                                                className="edit-trip-form__warning-message"
                                                             />
                                                         </div>
                                                         <div className="col">
@@ -195,12 +263,12 @@ function AddTripPage() {
                                                                 name={`participants.${index}.email`}
                                                                 placeholder={`#${index + 1} Participant's Email`}
                                                                 type="email"
-                                                                className="add-trip-form__input"
+                                                                className="edit-trip-form__input"
                                                             />
                                                             <ErrorMessage
                                                                 name={`participants.${index}.email`}
                                                                 component="div"
-                                                                className="add-trip-form__warning-message"
+                                                                className="edit-trip-form__warning-message"
                                                             />
                                                         </div>
                                                         <div className="col">
@@ -209,18 +277,18 @@ function AddTripPage() {
                                                                 name={`participants.${index}.phone`}
                                                                 placeholder={`#${index + 1} Participant's Phone Number`}
                                                                 type="text"
-                                                                className="add-trip-form__input"
+                                                                className="edit-trip-form__input"
                                                             />
                                                             <ErrorMessage
                                                                 name={`participants.${index}.phone`}
                                                                 component="div"
-                                                                className="add-trip-form__warning-message"
+                                                                className="edit-trip-form__warning-message"
                                                             />
                                                         </div>
                                                         <div className="col">
                                                             <button
                                                                 type="button"
-                                                                className="add-trip-form__delete-btn"
+                                                                className="edit-trip-form__delete-btn"
                                                                 onClick={() => remove(index)}
                                                             >
                                                                 Delete
@@ -229,10 +297,10 @@ function AddTripPage() {
                                                     </div>
                                                 ))}
                                         </div>
-                                        <div className="add-trip-form__section-buttons">
+                                        <div className="edit-trip-form__section-buttons">
                                             <button
                                                 type="button"
-                                                className="add-trip-form__add-btn"
+                                                className="edit-trip-form__add-btn"
                                                 onClick={() => push({ firstName: "", lastName: "", email: "", phone: "" })}
                                             >
                                                 <img src={plusIcon} alt="Plus Icon" />
@@ -244,23 +312,23 @@ function AddTripPage() {
 
                             <FieldArray name="emergency_contacts">
                                 {({ remove, push }) => (
-                                    <div className="add-trip-form__section">
-                                        <div className="add-trip-form__info">
+                                    <div className="edit-trip-form__section">
+                                        <div className="edit-trip-form__info">
                                             {values.emergency_contacts.length > 0 &&
                                                 values.emergency_contacts.map((emergency_contacts, index) => (
-                                                    <div className="add-trip-form__section-item" key={index}>
-                                                        <h4 className="add-trip-form__label">{`Emergency Contact ${index + 1}`}</h4>
+                                                    <div className="edit-trip-form__section-item" key={index}>
+                                                        <h4 className="edit-trip-form__label">{`Emergency Contact ${index + 1}`}</h4>
                                                         <div className="col">
                                                             <Field
                                                                 name={`emergency_contacts.${index}.firstName`}
                                                                 placeholder={`#${index + 1} Emergency Contact's First Name`}
                                                                 type="text"
-                                                                className="add-trip-form__input"
+                                                                className="edit-trip-form__input"
                                                             />
                                                             <ErrorMessage
                                                                 name={`emergency_contacts.${index}.firstName`}
                                                                 component="div"
-                                                                className="add-trip-form__warning-message"
+                                                                className="edit-trip-form__warning-message"
                                                             />
                                                         </div>
                                                         <div className="col">
@@ -268,12 +336,12 @@ function AddTripPage() {
                                                                 name={`emergency_contacts.${index}.lastName`}
                                                                 placeholder={`#${index + 1} Emergency Contact's Last Name`}
                                                                 type="text"
-                                                                className="add-trip-form__input"
+                                                                className="edit-trip-form__input"
                                                             />
                                                             <ErrorMessage
                                                                 name={`emergency_contacts.${index}.lastName`}
                                                                 component="div"
-                                                                className="add-trip-form__warning-message"
+                                                                className="edit-trip-form__warning-message"
                                                             />
                                                         </div>
                                                         <div className="col">
@@ -281,12 +349,12 @@ function AddTripPage() {
                                                                 name={`emergency_contacts.${index}.email`}
                                                                 placeholder={`#${index + 1} Emergency Contact's Email`}
                                                                 type="email"
-                                                                className="add-trip-form__input"
+                                                                className="edit-trip-form__input"
                                                             />
                                                             <ErrorMessage
                                                                 name={`emergency_contacts.${index}.email`}
                                                                 component="div"
-                                                                className="add-trip-form__warning-message"
+                                                                className="edit-trip-form__warning-message"
                                                             />
                                                         </div>
                                                         <div className="col">
@@ -294,18 +362,18 @@ function AddTripPage() {
                                                                 name={`emergency_contacts.${index}.phone`}
                                                                 placeholder={`#${index + 1} Emergency Contact's Phone`}
                                                                 type="text"
-                                                                className="add-trip-form__input"
+                                                                className="edit-trip-form__input"
                                                             />
                                                             <ErrorMessage
                                                                 name={`emergency_contacts.${index}.phone`}
                                                                 component="div"
-                                                                className="add-trip-form__warning-message"
+                                                                className="edit-trip-form__warning-message"
                                                             />
                                                         </div>
                                                         <div className="col">
                                                             <button
                                                                 type="button"
-                                                                className="add-trip-form__delete-btn"
+                                                                className="edit-trip-form__delete-btn"
                                                                 onClick={() => remove(index)}
                                                             >
                                                                 Delete
@@ -314,10 +382,10 @@ function AddTripPage() {
                                                     </div>
                                                 ))}
                                         </div>
-                                        <div className="add-trip-form__section-buttons">
+                                        <div className="edit-trip-form__section-buttons">
                                             <button
                                                 type="button"
-                                                className="add-trip-form__add-btn"
+                                                className="edit-trip-form__add-btn"
                                                 onClick={() => push({ firstName: "", lastName: "", email: "", phone: "" })}
                                             >
                                                 <img src={plusIcon} alt="Plus Icon" />
@@ -327,13 +395,13 @@ function AddTripPage() {
                                 )}
                             </FieldArray>
 
-                            <div className="add-trip-form__section">
-                                <div className="add-trip-form__info">
-                                    <div className="add-trip-form__section-item">
-                                        <label className="add-trip-form__label" htmlFor="departure_date">Departure Date & Time</label>
-                                        <Field name="departure_date" type="datetime-local" className="add-trip-form__input" />
+                            <div className="edit-trip-form__section">
+                                <div className="edit-trip-form__info">
+                                    <div className="edit-trip-form__section-item">
+                                        <label className="edit-trip-form__label" htmlFor="departure_date">Departure Date & Time</label>
+                                        <Field name="departure_date" type="datetime-local" className="edit-trip-form__input" />
                                         {errors.departure_date && touched.departure_date ? (
-                                            <div className="add-trip-form__warning-message">
+                                            <div className="edit-trip-form__warning-message">
                                                 {errors.departure_date}
                                             </div>
                                         ) : null}
@@ -341,13 +409,13 @@ function AddTripPage() {
                                 </div>
                             </div>
 
-                            <div className="add-trip-form__section">
-                                <div className="add-trip-form__info">
-                                    <div className="add-trip-form__section-item">
-                                        <label className="add-trip-form__label" htmlFor="return_date">Return Date & Time</label>
-                                        <Field name="return_date" type="datetime-local" className="add-trip-form__input" />
+                            <div className="edit-trip-form__section">
+                                <div className="edit-trip-form__info">
+                                    <div className="edit-trip-form__section-item">
+                                        <label className="edit-trip-form__label" htmlFor="return_date">Return Date & Time</label>
+                                        <Field name="return_date" type="datetime-local" className="edit-trip-form__input" />
                                         {errors.return_date && touched.return_date ? (
-                                            <div className="add-trip-form__warning-message">
+                                            <div className="edit-trip-form__warning-message">
                                                 {errors.return_date}
                                             </div>
                                         ) : null}
@@ -355,13 +423,13 @@ function AddTripPage() {
                                 </div>
                             </div>
 
-                            <div className="add-trip-form__section">
-                                <div className="add-trip-form__info">
-                                    <div className="add-trip-form__section-item">
-                                        <label className="add-trip-form__label" htmlFor="location">Location</label>
-                                        <Field name="location" placeholder="Location" type="text" className="add-trip-form__input" />
+                            <div className="edit-trip-form__section">
+                                <div className="edit-trip-form__info">
+                                    <div className="edit-trip-form__section-item">
+                                        <label className="edit-trip-form__label" htmlFor="location">Location</label>
+                                        <Field name="location" placeholder="Location" type="text" className="edit-trip-form__input" />
                                         {errors.location && touched.location ? (
-                                            <div className="add-trip-form__warning-message">
+                                            <div className="edit-trip-form__warning-message">
                                                 {errors.location}
                                             </div>
                                         ) : null}
@@ -369,13 +437,13 @@ function AddTripPage() {
                                 </div>
                             </div>
 
-                            <div className="add-trip-form__section">
-                                <div className="add-trip-form__info">
-                                    <div className="add-trip-form__section-item">
-                                        <label className="add-trip-form__label" htmlFor="purpose">Purpose</label>
-                                        <Field name="purpose" placeholder="Purpose" as="textarea" className="add-trip-form__textarea" />
+                            <div className="edit-trip-form__section">
+                                <div className="edit-trip-form__info">
+                                    <div className="edit-trip-form__section-item">
+                                        <label className="edit-trip-form__label" htmlFor="purpose">Purpose</label>
+                                        <Field name="purpose" placeholder="Purpose" as="textarea" className="edit-trip-form__textarea" />
                                         {errors.purpose && touched.purpose ? (
-                                            <div className="add-trip-form__warning-message">
+                                            <div className="edit-trip-form__warning-message">
                                                 {errors.purpose}
                                             </div>
                                         ) : null}
@@ -385,21 +453,21 @@ function AddTripPage() {
 
                             <FieldArray name="activities">
                                 {() => (
-                                    <div className="add-trip-form__section">
-                                        <div className="add-trip-form__info">
-                                            <div className="add-trip-form__section-item">
-                                                <label className="add-trip-form__label" id="checkbox-group">Activities</label>
-                                                <div className="add-trip-form__checkbox-group" role="group" aria-labelledby="checkbox-group">
+                                    <div className="edit-trip-form__section">
+                                        <div className="edit-trip-form__info">
+                                            <div className="edit-trip-form__section-item">
+                                                <label className="edit-trip-form__label" id="checkbox-group">Activities</label>
+                                                <div className="edit-trip-form__checkbox-group" role="group" aria-labelledby="checkbox-group">
                                                     {activitiesList.length > 0 &&
                                                         activitiesList.map((activity, index) => (
-                                                            <label className="add-trip-form__checkbox-item" key={index}>
+                                                            <label className="edit-trip-form__checkbox-item" key={index}>
                                                                 <Field
-                                                                    className="add-trip-form__checkbox-check"
+                                                                    className="edit-trip-form__checkbox-check"
                                                                     name="activities"
                                                                     type="checkbox"
                                                                     value={activity}
                                                                 />
-                                                                <span className="add-trip-form__checkbox-text">{activity}</span>
+                                                                <span className="edit-trip-form__checkbox-text">{activity}</span>
                                                             </label>
                                                         ))
                                                     }
@@ -412,21 +480,21 @@ function AddTripPage() {
 
                             <FieldArray name="supplies">
                                 {() => (
-                                    <div className="add-trip-form__section">
-                                        <div className="add-trip-form__info">
-                                            <div className="add-trip-form__section-item">
-                                                <label className="add-trip-form__label" id="checkbox-group">Supplies</label>
-                                                <div className="add-trip-form__checkbox-group" role="group" aria-labelledby="checkbox-group">
+                                    <div className="edit-trip-form__section">
+                                        <div className="edit-trip-form__info">
+                                            <div className="edit-trip-form__section-item">
+                                                <label className="edit-trip-form__label" id="checkbox-group">Supplies</label>
+                                                <div className="edit-trip-form__checkbox-group" role="group" aria-labelledby="checkbox-group">
                                                     {suppliesList.length > 0 &&
                                                         suppliesList.map((supply, index) => (
-                                                            <label className="add-trip-form__checkbox-item" key={index}>
+                                                            <label className="edit-trip-form__checkbox-item" key={index}>
                                                                 <Field
-                                                                    className="add-trip-form__checkbox-check"
+                                                                    className="edit-trip-form__checkbox-check"
                                                                     name="supplies"
                                                                     type="checkbox"
                                                                     value={supply}
                                                                 />
-                                                                <span className="add-trip-form__checkbox-text">{supply}</span>
+                                                                <span className="edit-trip-form__checkbox-text">{supply}</span>
                                                             </label>
                                                         ))
                                                     }
@@ -437,13 +505,13 @@ function AddTripPage() {
                                 )}
                             </FieldArray>
 
-                            <div className="add-trip-form__section">
-                                <div className="add-trip-form__info">
-                                    <div className="add-trip-form__section-item">
-                                        <label className="add-trip-form__label" htmlFor="add_info">Additional Information</label>
-                                        <Field name="add_info" placeholder="Additional Information" as="textarea" className="add-trip-form__textarea" />
+                            <div className="edit-trip-form__section">
+                                <div className="edit-trip-form__info">
+                                    <div className="edit-trip-form__section-item">
+                                        <label className="edit-trip-form__label" htmlFor="add_info">Additional Information</label>
+                                        <Field name="add_info" placeholder="Additional Information" as="textarea" className="edit-trip-form__textarea" />
                                         {errors.add_info && touched.add_info ? (
-                                            <div className="add-trip-form__warning-message">
+                                            <div className="edit-trip-form__warning-message">
                                                 {errors.add_info}
                                             </div>
                                         ) : null}
@@ -452,27 +520,27 @@ function AddTripPage() {
                             </div>
 
                             {errorMessage &&
-                                <div className="add-trip-form__error-message">
-                                    <svg className="add-trip-form__error-message-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path className="add-trip-form__error-message-icon-path" d="M1 21H23L12 2L1 21ZM13 18H11V16H13V18ZM13 14H11V10H13V14Z" fill="#191D21" />
+                                <div className="edit-trip-form__error-message">
+                                    <svg className="edit-trip-form__error-message-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path className="edit-trip-form__error-message-icon-path" d="M1 21H23L12 2L1 21ZM13 18H11V16H13V18ZM13 14H11V10H13V14Z" fill="#191D21" />
                                     </svg>
                                     {errorMessage}
                                 </div>
                             }
 
-                            <section className="add-trip-form__buttons">
+                            <section className="edit-trip-form__buttons">
                                 <button
                                     type="button"
-                                    className="add-trip-form__btn add-trip-form__btn--cancel"
+                                    className="edit-trip-form__btn edit-trip-form__btn--cancel"
                                     onClick={() => history.goBack()}
                                 >
                                     Cancel
                                 </button>
                                 <button
-                                    className="add-trip-form__btn add-trip-form__btn--save"
+                                    className="edit-trip-form__btn edit-trip-form__btn--save"
                                     type="submit"
                                 >
-                                    Save Trip
+                                    Edit Trip
                                 </button>
                             </section>
                         </Form>
@@ -483,4 +551,4 @@ function AddTripPage() {
     )
 }
 
-export default AddTripPage;
+export default EditTripPage;

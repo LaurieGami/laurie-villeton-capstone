@@ -10,6 +10,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import TripsListPage from './pages/TripsListPage/TripsListPage';
 import TripDetailsPage from './pages/TripDetailsPage/TripDetailsPage';
 import AddTripPage from './pages/AddTripPage/AddTripPage';
+import EditTripPage from './pages/EditTripPage/EditTripPage';
 
 function App() {
     return (
@@ -22,7 +23,8 @@ function App() {
           <Route path="/profile" component={ProfilePage} />
           <Route exact path="/trips" component={TripsListPage} />
           <Route exact path="/trips/add" component={AddTripPage} />
-          <Route path="/trips/:tripId" component={TripDetailsPage} />
+          <Route exact path="/trips/:tripId" component={TripDetailsPage} />
+          <Route exact path="/trips/:tripId/edit" component={EditTripPage} />
         </Switch>
       </BrowserRouter>
     )

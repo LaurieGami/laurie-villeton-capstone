@@ -19,7 +19,7 @@ function RegisterPage() {
     useEffect(() => {
         if (authToken) {
             setIsLoggedIn(true);
-            return () => history.push(`/profile`);
+            return () => history.push(`/trips`);
         }
     }, [authToken, history]);
 
@@ -66,7 +66,7 @@ function RegisterPage() {
         }).then(res => {
             sessionStorage.setItem('authToken', res.data.authToken);
             setIsLoggedIn(true);
-            history.push(`/profile`);
+            history.push(`/trips`);
         }).catch((err) => {
             setErrorMessage(err.response.data.message);
         });

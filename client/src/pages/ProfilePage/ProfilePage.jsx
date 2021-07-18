@@ -11,7 +11,7 @@ class ProfilePage extends Component {
         userInfo: {}
     }
 
-    handleAuthFail = () => {
+    logOut = () => {
         sessionStorage.removeItem('authToken');
         this.props.history.push(`/`);
     }
@@ -26,7 +26,7 @@ class ProfilePage extends Component {
                 isLoading: false,
                 userInfo: res.data
             });
-        }).catch(() => this.handleAuthFail());
+        }).catch(() => this.logOut());
     }
 
     componentDidMount() {
@@ -38,10 +38,6 @@ class ProfilePage extends Component {
     render() {
         const { isLoading, userInfo } = this.state;
 
-        if (isLoading) {
-            <h1>Loading...</h1>
-        }
-
         return (
             <>
             <NavBar />
@@ -52,18 +48,22 @@ class ProfilePage extends Component {
                 </section>
 
                 {/* Profile Info Component */}
-                <article className="profile-info">
-                    <section className="profile-info__header">
-                        <h2 className="profile-info__name">{userInfo.firstName} {userInfo.lastName}</h2>
-                        <div className="profile-info__buttons">
-                            <button className="profile-info__btn">Edit</button>
-                            <svg onClick={() => this.handleAuthFail()} className="profile-info__logout-icon" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
-                                <path className="profile-info__logout-icon-path" id="Shape" d="m7.1,12.6l1.4,1.4l5,-5l-5,-5l-1.4,1.4l2.6,2.6l-9.7,0l0,2l9.7,0l-2.6,2.6l0,0zm8.9,-12.6l-14,0c-1.1,0 -2,0.9 -2,2l0,4l2,0l0,-4l14,0l0,14l-14,0l0,-4l-2,0l0,4c0,1.1 0.9,2 2,2l14,0c1.1,0 2,-0.9 2,-2l0,-14c0,-1.1 -0.9,-2 -2,-2l0,0z" />
-                            </svg>
-                        </div>
-                    </section>
-                    <p className="profile-info__email">{userInfo.email}</p>
-                    <p className="profile-info__phone">{userInfo.phone}</p>
+                <article className="profile-info-container">
+                    {isLoading &&
+                        <h1>Loading...</h1>
+                    }
+                    {!isLoading && 
+                        <article className="profile-info">
+                            <section className="profile-info__header">
+                                <h2 className="profile-info__name">{userInfo.firstName} {userInfo.lastName}</h2>
+                                <div className="profile-info__buttons">
+                                    <button onClick={() => this.logOut()} className="profile-info__btn">Logout</button>
+                                </div>
+                            </section>
+                            <p className="profile-info__email">{userInfo.email}</p>
+                            <p className="profile-info__phone">{userInfo.phone}</p>
+                        </article>
+                    }
                 </article>
             </main>
             </>

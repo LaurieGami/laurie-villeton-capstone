@@ -19,38 +19,6 @@
     &__btn {
         @include primary-button;
     }
-
-    &__status {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: colors.$ink-6;
-        margin-top: $margin;
-        
-        &-title {
-            display: flex;
-            justify-content: center;
-            font: $mSubheader;
-        }
-
-        &-buttons {
-            display: flex;
-            justify-content: center;
-        }
-
-        &--inactive {
-            @include trip-status-inactive;
-        }
-
-        &--active {
-            @include trip-status-active;
-        }
-
-        &--completed {
-            @include trip-status-completed;
-        }
-    }
-
 }
 
 .trip-details {
@@ -182,11 +150,13 @@
     &__header {
         display: flex;
         justify-content: space-between;
+        margin-bottom: $margin*0.25;
     }
     
     &__body {
         display: flex;
         flex-direction: column;
+        margin-bottom: $margin*0.25;
     }
     
     &__buttons {
