@@ -9,13 +9,13 @@ import compassIcon from '../../assets/icons/compass-icon.svg';
 function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     
-    const authToken = sessionStorage.getItem('authToken');
-
+    // const authToken = sessionStorage.getItem('authToken');
+    
     useEffect(() => {
-        if (authToken) {
+        // if (authToken) {
             setIsLoggedIn(true);
-        }
-    }, [authToken]);
+        // }
+    }, [isLoggedIn]);
 
     return (
         <>
@@ -25,7 +25,7 @@ function Header() {
                     <h2 className="header__logo-text">Smart Adventures</h2>
                 </div>
             </header>
-            {isLoggedIn &&
+            {!!isLoggedIn &&
                 <NavBar />
             }
         </>
