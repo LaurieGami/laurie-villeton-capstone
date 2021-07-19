@@ -1,0 +1,102 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/colors';
+
+.register-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 90vh;
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: $padding;
+
+        @include tablet {
+            padding: $padding*2;
+        }
+    
+        @include desktop {
+            width: 1080px;
+            align-self: center;
+            padding: $padding*2 0;
+        }
+    }
+
+    &__title {
+        font: $mPageHeader;
+        margin-bottom: $margin;
+
+        @include tablet {
+            font: $tPageHeader;
+        }
+    }
+
+    &__img-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
+        margin: $margin 0;
+
+        @include tablet {
+            height: 400px;
+        }
+    }
+
+    &__img {
+        height: 100%;
+    }
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    
+    @include tablet {
+        max-width: 250px;
+    }
+
+    &__input {
+        @include primary-input;
+    }
+
+    &__warning-message {
+        @include warning-notification;
+
+        &-icon {
+            @include small-icon;
+        }
+    }
+
+    &__error-message {
+        @include error-notification;
+
+        &-icon {
+            @include small-icon;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+
+        @include tablet {
+            justify-content: flex-end;
+        }
+    }
+
+    &__btn {
+        @include primary-button;
+        
+        &-icon {
+            @include primary-icon;
+        }
+        
+    }
+}

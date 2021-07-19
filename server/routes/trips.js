@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Trip = require('../models/trip');
+const Comment = require('../models/comment');
 
 const authorize = require('../middlewares/auth');
 
@@ -56,7 +57,8 @@ router.route('/trips/:tripId')
                     purpose: req.body.purpose,
                     activities: JSON.stringify(req.body.activities),
                     supplies: JSON.stringify(req.body.supplies),
-                    add_info: req.body.add_info
+                    add_info: req.body.add_info,
+                    trip_status: req.body.trip_status
                 })
                 .then((updatedTrip) => {
                     res.status(200).json(updatedTrip);
@@ -65,19 +67,67 @@ router.route('/trips/:tripId')
                     res.status(400).json({ message: `Error, can't update trip ${req.params.tripId} of user ${req.decoded.id}`, error: err })
                 })
             });
+    })
+    .delete(authorize, (req, res) => {
+        Trip.where({ user_id: req.decoded.id, id: req.params.tripId })
+            .destroy()
+            .then(() => {
+                res.status(200).json({
+                    message: `Trip ${req.params.tripId} deleted successfully`
+                })
+            })
+            .catch((err) => {
+                res.status(400).json({
+                    message: "Error, can't delete this trip",
+                    error: err
+                })
+            });
     });
 
 // Access does not require "authorize" as it should be accessible for everyone at this point in time
 router.route('/trips/:tripId')
 .get((req, res) => {
     Trip.where({ id: req.params.tripId })
-        .fetch()
+        .fetch({withRelated: ['comments']})
         .then((trip) => {
             res.status(200).json(trip);
         })
         .catch((err) =>
             res.status(400).json({ message: `Error getting trip ${req.params.tripId}`, error: err })
         );
+});
+
+router.route('/comments/:tripId')
+.post((req, res) => {
+    new Comment ({
+        username: req.body.username,
+        comment: req.body.comment,
+        trip_id: req.params.tripId
+    })
+        .save()
+        .then((newComment) => {
+            res.status(201).json(newComment);
+        })
+        .catch((err) =>
+            res.status(400).json({ message: `Error, can't create a new comment for trip ${req.params.tripId}`, error: err })
+        );
 })
+
+router.route('/comments/:commentId')
+.delete((req, res) => {
+    Comment.where({ id: req.params.commentId })
+        .destroy()
+        .then(() => {
+            res.status(200).json({
+                message: `Comment ${req.params.commentId} deleted successfully`
+            })
+        })
+        .catch((err) => {
+            res.status(400).json({
+                message: "Error, can't delete this comment",
+                error: err
+            })
+        });
+});
 
 module.exports = router;

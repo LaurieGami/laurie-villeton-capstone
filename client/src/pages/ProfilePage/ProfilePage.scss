@@ -1,0 +1,92 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/colors';
+
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    padding: $padding;
+    min-height: 100vh;
+    background-color: colors.$ink-6;
+
+    @include tablet {
+        padding: $padding*2;
+    }
+
+    @include desktop {
+        width: 1080px;
+        align-self: center;
+        padding: $padding*2 0;
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: $margin*1.5;
+
+        @include tablet {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    &__title {
+        font: $mPageHeader;
+        margin-bottom: $margin*0.5;
+
+        @include tablet {
+            font: $tPageHeader;
+            margin-bottom: 0;
+        }
+    }
+
+    &__btn {
+        @include primary-button;
+    }
+}
+
+.profile-info {
+
+    &-container {
+        display: flex;
+        flex-direction: column;
+        border-radius: $border-radius*2;
+        background-color: colors.$accent-orange;
+        margin-bottom: $margin;
+        box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+        padding: $padding;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: $margin*0.5;
+    }
+
+    &__name {
+        font: $mSubheader;
+
+        @include tablet {
+            font: $tSubheader;
+        }
+    }
+
+    &__email, &__phone {
+        font: $mBodyLarge;
+
+        @include tablet {
+            font: $tBodyLarge;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+    }
+
+    &__btn {
+        @include form-button-black;
+    }
+}

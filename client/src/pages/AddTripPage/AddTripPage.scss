@@ -1,0 +1,169 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/colors';
+
+.add-trip-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: $padding;
+    min-height: 90vh;
+
+    @include tablet {
+        padding: $padding*2;
+    }
+
+    @include desktop {
+        width: 1080px;
+        align-self: center;
+        padding: $padding*2 0;
+    }
+
+    &__title {
+        font: $mPageHeader;
+        margin-bottom: $margin*0.5;
+
+        @include tablet {
+            font: $tPageHeader;
+        }
+    }
+
+    &__text {
+        font: $mBodyMedium;
+        color: colors.$ink-2;
+        margin-bottom: $margin;
+
+        @include tablet {
+            font: $tBodyMedium;
+        }
+    }
+}
+
+.add-trip-form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 100%;
+
+    @include tablet {
+        max-width: 400px;
+    }
+
+    &__section {
+        display: flex;
+        flex-direction: column;
+        border-radius: $border-radius*2;
+        background-color: colors.$accent-blue;
+        margin-bottom: $margin;
+        box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+
+        &-item {
+            padding-bottom: $padding;
+        }
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        padding: $padding $padding 0;
+    }
+
+    &__section-buttons {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding: $padding;
+        background-color: colors.$ink-6;
+    }
+
+    &__delete-btn {
+        @include form-button;
+    }
+
+    &__add-btn {
+        @include form-button-black;
+    }
+
+    &__label {
+        font: $mBodyMedium;
+        font-weight: 700;
+        margin-bottom: $margin*0.25;
+
+        @include tablet {
+            font: $tBodyMedium;
+            font-weight: 700;
+        }
+    }
+
+    &__input {
+        @include primary-input;
+        margin-bottom: $margin*0.5;
+    }
+
+    &__textarea {
+        @include primary-textarea;
+        margin-bottom: $margin*0.5;
+    }
+
+    &__checkbox{
+
+        &-group {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        &-item {
+            display: flex;
+            align-items: center;
+            width: 50%;
+            margin-bottom: $margin*0.5;
+        }
+
+        &-check {
+            margin-right: $margin*0.25;
+        }
+
+        &-text {
+            font: $mBodyLarge;
+
+            @include tablet {
+                font: $tBodyLarge;
+            }
+        }
+    }
+
+    &__warning-message {
+        @include warning-notification;
+
+        &-icon {
+            @include small-icon;
+        }
+    }
+
+    &__error-message {
+        @include error-notification;
+
+        &-icon {
+            @include small-icon;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        margin: $margin 0;
+    }
+
+    &__btn {
+        @include primary-button;
+        
+        &--save {
+            margin-left: $margin;
+        }
+
+        &--cancel {
+            @include secondary-button;
+        }
+    }
+}

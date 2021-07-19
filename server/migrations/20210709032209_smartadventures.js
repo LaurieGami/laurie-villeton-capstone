@@ -20,20 +20,36 @@ exports.up = function (knex) {
                 .inTable('users')
                 .onUpdate('CASCADE')
                 .onDelete('CASCADE');
-            table.json('participants').notNullable();
-            table.json('emergency_contacts').notNullable();
-            table.datetime('departure_date').notNullable();
-            table.datetime('return_date').notNullable();
-            table.string('location').notNullable();
-            table.string('purpose').notNullable();
-            table.json('activities').notNullable();
-            table.json('supplies').notNullable();
-            table.string('add_info').notNullable();
-            table.json('comments')
+            table.json('participants');
+            table.json('emergency_contacts');
+            table.datetime('departure_date');
+            table.datetime('return_date');
+            table.string('location');
+            table.string('purpose');
+            table.json('activities');
+            table.json('supplies');
+            table.string('add_info');
+            // table.json('comments');
+            // table.boolean('min_info');
+            table.string('trip_status').defaultTo('inactive');
             table.timestamp('updated_at').defaultTo(knex.fn.now());
+        })
+        .createTable('comments', (table) => {
+            table.increments('id').primary();
+            table.string('username').notNullable();
+            table.string('comment');
+            table
+                .integer('trip_id')
+                .unsigned()
+                .notNullable()
+                .references('id')
+                .inTable('trips')
+                .onUpdate('CASCADE')
+                .onDelete('CASCADE');
+            table.timestamp('posted_at').defaultTo(knex.fn.now());
         });
 };
 
 exports.down = function (knex) {
-    return knex.schema.dropTable('trips').dropTable('users');
+    return knex.schema.dropTable('comments').dropTable('trips').dropTable('users');
 };

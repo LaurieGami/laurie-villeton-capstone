@@ -1,0 +1,266 @@
+@use '../../styles/partials/mixins' as *;
+@use '../../styles/partials/variables' as *;
+@use '../../styles/partials/colors';
+
+.trip-details-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: $padding;
+    min-height: 90vh;
+
+    @include tablet {
+        padding: $padding*2;
+    }
+
+    @include desktop {
+        width: 1080px;
+        align-self: center;
+        padding: $padding*2 0;
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: $margin*1.5;
+
+        @include tablet {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+
+    &__title {
+        font: $mPageHeader;
+        margin-bottom: $margin*0.5;
+
+        @include tablet {
+            font: $tPageHeader;
+            margin-bottom: 0;
+        }
+    }
+
+    &__btn {
+        @include primary-button;
+    }
+}
+
+.trip-details {
+    display: flex;
+    flex-direction: column;
+    // border-radius: $border-radius*2;
+    // background-color: colors.$accent-yellow;
+    // margin-bottom: $margin;
+    // box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+    // overflow: hidden;
+
+    &__title {
+        font: $mBodyLarge;
+        font-weight: 700;
+
+        @include tablet {
+            font: $tBodyLarge;
+            font-weight: 700;
+        }
+    }
+
+    &__subtitle {
+        font: $mLabels;
+
+        @include tablet {
+            font: $tLabels;
+        }
+    }
+
+    &__status {
+        &-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        &--inactive {
+            @include trip-status-inactive;
+        }
+
+        &--active {
+            @include trip-status-active;
+        }
+
+        &--completed {
+            @include trip-status-completed;
+        }
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        // padding: $padding;
+    }
+
+    &__section {
+        border-radius: $border-radius*2;
+        background-color: colors.$accent-blue;
+        margin-bottom: $margin;
+        box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+        padding: $padding;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__name {
+        font: $mSubheader;
+
+        @include tablet {
+            font: $tSubheader;
+        }
+    }
+
+    &__group {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+
+        &-item{
+            padding: $padding*0.25;
+            width: 50%;
+
+            @include tablet {
+                width: 25%;
+            }
+        }
+    }
+
+    &__text {
+        font: $mBodyLarge;
+
+        @include tablet {
+            font: $mBodyLarge;
+        }
+    }
+}
+
+.trip-comments {
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+        font: $mSubheader;
+        margin: $margin 0;
+
+        @include tablet {
+            font: $tSubheader;
+        }
+    }
+}
+
+.trip-comments-form {
+    display: flex;
+    flex-direction: column;
+    background-color: colors.$accent-yellow;
+    border-radius: $border-radius*2;
+    margin-bottom: $margin;
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    padding: $padding;
+
+    &__label {
+        font: $mBodyLarge;
+        font-weight: 700;
+
+        @include tablet {
+            font: $tBodyLarge;
+            font-weight: 700;
+        }
+    }
+
+    &__input {
+        @include primary-input;
+    }
+
+    &__textarea {
+        @include primary-textarea;
+    }
+
+    &__warning-message {
+        @include warning-notification;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: flex-end
+    }
+
+    &__btn {
+        @include form-button-black;
+    }
+}
+
+.trip-comments-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment {
+    display: flex;
+    flex-direction: column;
+    background-color: colors.$accent-yellow;
+    border-radius: $border-radius*2;
+    margin-bottom: $margin;
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    padding: $padding;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: $margin*0.25;
+    }
+    
+    &__body {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: $margin*0.25;
+    }
+    
+    &__buttons {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    &__name {
+        font: $mBodyLarge;
+        font-weight: 700;
+
+        @include tablet {
+            font: $tBodyLarge;
+            font-weight: 700;
+        }
+    }
+
+    &__time {
+        font: $mBodyMedium;
+
+        @include tablet {
+            font: $tBodyMedium;
+        }
+    }
+
+    &__text {
+        font: $mBodyLarge;
+
+        @include tablet {
+            font: $tBodyLarge;
+        }
+    }
+
+    &__delete-btn {
+        @include form-button;
+    }
+}
