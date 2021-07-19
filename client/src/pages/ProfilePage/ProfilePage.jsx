@@ -1,7 +1,6 @@
 import "./ProfilePage.scss";
 import { Component } from "react";
 import axios from 'axios';
-import NavBar from "../../components/NavBar/NavBar";
 
 const baseUrl = 'http://localhost:5000/api';
 
@@ -40,11 +39,11 @@ class ProfilePage extends Component {
 
         return (
             <>
-            <NavBar />
             <main className="profile-page">
 
                 <section className="profile-page__header">
                     <h1 className="profile-page__title">My Profile</h1>
+                    <button onClick={() => this.logOut()} className="profile-page__btn">Logout</button>
                 </section>
 
                 {/* Profile Info Component */}
@@ -56,9 +55,9 @@ class ProfilePage extends Component {
                         <article className="profile-info">
                             <section className="profile-info__header">
                                 <h2 className="profile-info__name">{userInfo.firstName} {userInfo.lastName}</h2>
-                                <div className="profile-info__buttons">
+                                {/* <div className="profile-info__buttons">
                                     <button onClick={() => this.logOut()} className="profile-info__btn">Logout</button>
-                                </div>
+                                </div> */}
                             </section>
                             <p className="profile-info__email">{userInfo.email}</p>
                             <p className="profile-info__phone">{userInfo.phone}</p>

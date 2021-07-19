@@ -7,23 +7,46 @@
     flex-direction: column;
     justify-content: center;
     padding: $padding;
-    min-height: 100vh;
+    min-height: 90vh;
+
+    @include tablet {
+        padding: $padding*2;
+    }
+
+    @include desktop {
+        width: 1080px;
+        align-self: center;
+    }
 
     &__title {
         font: $mPageHeader;
         margin-bottom: $margin*0.5;
+
+        @include tablet {
+            font: $tPageHeader;
+        }
     }
 
     &__text {
         font: $mBodyMedium;
         color: colors.$ink-2;
         margin-bottom: $margin;
+
+        @include tablet {
+            font: $tBodyMedium;
+        }
     }
 }
 
 .edit-trip-form {
     display: flex;
     flex-direction: column;
+    align-self: center;
+    width: 100%;
+
+    @include tablet {
+        max-width: 400px;
+    }
 
     &__section {
         display: flex;
@@ -63,8 +86,13 @@
 
     &__label {
         font: $mBodyMedium;
-        font-weight: bold;
+        font-weight: 700;
         margin-bottom: $margin*0.25;
+
+        @include tablet {
+            font: $tBodyMedium;
+            font-weight: 700;
+        }
     }
 
     &__input {
@@ -98,6 +126,10 @@
 
         &-text {
             font: $mBodyLarge;
+
+            @include tablet {
+                font: $tBodyLarge;
+            }
         }
     }
 

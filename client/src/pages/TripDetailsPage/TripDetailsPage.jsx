@@ -5,8 +5,6 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
-import NavBar from "../../components/NavBar/NavBar";
-
 import { timeAgo, dateToLocale, timeToLocale } from '../../utils/date';
 
 const baseUrl = 'http://localhost:5000/api';
@@ -131,7 +129,6 @@ class TripDetailsPage extends Component {
 
         return (
             <>
-                <NavBar />
                 <main className="trip-details-page">
                     <section className="trip-details-page__header">
                         <h1 className="trip-details-page__title">Trip Details</h1>
@@ -162,27 +159,27 @@ class TripDetailsPage extends Component {
                                         </div>
                                     </div>
                                     <div className="trip-details__section">
-                                        <div className="trip-details__part-one">
-                                            <h3 className="trip-details__title">Participants</h3>
+                                        <h3 className="trip-details__title">Participants</h3>
+                                        <div className="trip-details__group">
                                             {participants.map((participant, index) => {
                                                 return (
-                                                    <div className="trip-details__" key={`participants-${index}`}>
+                                                    <div className="trip-details__group-item" key={`participants-${index}`}>
                                                         <h4 className="trip-details__subtitle">Participant {index + 1}</h4>
-                                                        <p>{participant.firstName}</p>
-                                                        <p>{participant.lastName}</p>
-                                                        <p>{participant.email}</p>
-                                                        <p>{participant.phone}</p>
+                                                        <p className="trip-details__text">{participant.firstName}</p>
+                                                        <p className="trip-details__text">{participant.lastName}</p>
+                                                        <p className="trip-details__text">{participant.email}</p>
+                                                        <p className="trip-details__text">{participant.phone}</p>
                                                     </div>
                                                 )
                                             })}
                                         </div>
                                     </div>
                                     <div className="trip-details__section">
-                                        <div className="trip-details__part-two">
-                                            <h3 className="trip-details__title">Emergency Contacts</h3>
+                                        <h3 className="trip-details__title">Emergency Contacts</h3>
+                                        <div className="trip-details__group">
                                             {emergency_contacts.map((emergency_contact, index) => {
                                                 return (
-                                                    <div className="trip-details__" key={`emergency_contacts-${index}`}>
+                                                    <div className="trip-details__group-item" key={`emergency_contacts-${index}`}>
                                                         <h4 className="trip-details__subtitle">Emergency Contact {index + 1}</h4>
                                                         <p>{emergency_contact.firstName}</p>
                                                         <p>{emergency_contact.lastName}</p>
@@ -194,37 +191,29 @@ class TripDetailsPage extends Component {
                                         </div>
                                     </div>
                                     <div className="trip-details__section">
-                                        <div className="trip-details__part-three">
-                                            <h3 className="trip-details__title">Departure Date</h3>
-                                            <p className="trip-details__departure">{dateToLocale(departure_date)}</p>
-                                            <p className="trip-details__departure">{timeToLocale(departure_date)}</p>
-                                        </div>
+                                        <h3 className="trip-details__title">Departure Date</h3>
+                                        <p className="trip-details__departure">{dateToLocale(departure_date)}</p>
+                                        <p className="trip-details__departure">{timeToLocale(departure_date)}</p>
                                     </div>
                                     <div className="trip-details__section">
-                                        <div className="trip-details__part-four">
-                                            <h3 className="trip-details__title">Return Date</h3>
-                                            <p className="trip-details__return">{dateToLocale(return_date)}</p>
-                                            <p className="trip-details__departure">{timeToLocale(return_date)}</p>
-                                        </div>
+                                        <h3 className="trip-details__title">Return Date</h3>
+                                        <p className="trip-details__return">{dateToLocale(return_date)}</p>
+                                        <p className="trip-details__departure">{timeToLocale(return_date)}</p>
                                     </div>
                                     <div className="trip-details__section">
-                                        <div className="trip-details__part-five">
-                                            <h3 className="trip-details__title">Location</h3>
-                                            <p className="trip-details__location">{location}</p>
-                                        </div>
+                                        <h3 className="trip-details__title">Location</h3>
+                                        <p className="trip-details__location">{location}</p>
                                     </div>
                                     <div className="trip-details__section">
-                                        <div className="trip-details__part-six">
-                                            <h3 className="trip-details__title">Purpose</h3>
-                                            <p className="trip-details__purpose">{purpose}</p>
-                                        </div>
+                                        <h3 className="trip-details__title">Purpose</h3>
+                                        <p className="trip-details__purpose">{purpose}</p>
                                     </div>
                                     <div className="trip-details__section">
-                                        <div className="trip-details__part-seven">
-                                            <h3 className="trip-details__title">Activities</h3>
+                                        <h3 className="trip-details__title">Activities</h3>
+                                            <div className="trip-details__group">
                                             {activities.map((activity, index) => {
                                                 return (
-                                                    <div className="trip-details__" key={index}>
+                                                    <div className="trip-details__group-item" key={index}>
                                                         {activity}
                                                     </div>
                                                 )
@@ -232,11 +221,11 @@ class TripDetailsPage extends Component {
                                         </div>
                                     </div>
                                     <div className="trip-details__section">
-                                        <div className="trip-details__part-eight">
-                                            <h3 className="trip-details__title">Supplies</h3>
+                                        <h3 className="trip-details__title">Supplies</h3>
+                                        <div className="trip-details__group">
                                             {supplies.map((supply, index) => {
                                                 return (
-                                                    <div className="trip-details__" key={index}>
+                                                    <div className="trip-details__group-item" key={index}>
                                                         {supply}
                                                     </div>
                                                 )

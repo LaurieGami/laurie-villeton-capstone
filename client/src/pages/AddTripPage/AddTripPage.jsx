@@ -7,7 +7,6 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
-import NavBar from "../../components/NavBar/NavBar";
 import plusIcon from "../../assets/icons/add-more-plus.svg";
 
 const baseUrl = 'http://localhost:5000/api';
@@ -82,8 +81,6 @@ function AddTripPage() {
             return newDate;
         };
 
-        console.log(departure_date);
-
         axios.post(`${baseUrl}/trips`,
             {
                 name: name,
@@ -111,7 +108,6 @@ function AddTripPage() {
 
     return (
         <>
-            <NavBar />
             <main className="add-trip-page">
                 {isLoading &&
                     <h1>Loading...</h1>

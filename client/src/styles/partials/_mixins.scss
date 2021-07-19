@@ -35,11 +35,11 @@
         background-color: colors.$ink-2;
     }
 
-    // @include tablet {
-    //     width: auto;
-    //     height: 58px;
-    //     font: $tSubheader;
-    // }
+    @include tablet {
+        width: auto;
+        height: 58px;
+        font: $tSubheader;
+    }
 }
 
 @mixin secondary-button {
@@ -74,11 +74,11 @@
         background-color: colors.$ink-2;
     }
 
-    // @include tablet {
-    //     width: auto;
-    //     height: 58px;
-    //     font: $tSubheader;
-    // }
+    @include tablet {
+        height: 38px;
+        font: $tBodyLarge;
+        font-weight: 700;
+    }
 }
 
 @mixin form-button-black {
@@ -109,7 +109,7 @@
 
     &:focus {
         outline: none;
-        border: 1px solid colors.$active; 
+        border: 1px solid colors.$blue; 
     }
 
     &:invalid {
@@ -121,9 +121,10 @@
         color: colors.$ink-1;
     }
 
-    &--invalid {
-        border: 1px solid colors.$error;
+    @include tablet {
+        height: 38px;
     }
+
 }
 
 @mixin primary-textarea {
@@ -141,7 +142,7 @@
 
     &:focus {
         outline: none;
-        border: 1px solid colors.$active; 
+        border: 1px solid colors.$blue; 
     }
 
     &:invalid {
@@ -153,8 +154,8 @@
         color: colors.$ink-1;
     }
 
-    &--invalid {
-        border: 1px solid colors.$error;
+    @include tablet {
+        height: 120px;
     }
 }
 
@@ -188,8 +189,12 @@
     border-radius: $border-radius;
     padding: $padding*0.5 $padding;
     width: 100%;
-    font: $tBodySmall;
+    font: $mBodySmall;
     margin-bottom: $margin*0.5;
+
+    @include tablet {
+        font: $tBodySmall;
+    }
 }
 
 @mixin warning-notification {
@@ -200,22 +205,28 @@
 // TRIP STATUS
 @mixin trip-status-inactive {
     color: colors.$ink-1;
-    background-color: colors.$warning;
+    background-color: colors.$grey;
     padding: 0 $padding;
-    font: $mBodyLarge;
+    font: $mLabels;
     height: 32px;
     display: flex;
     align-items: center;
     border-radius: $border-radius*4;
     margin: 0 $margin*0.5;
+
+    @include tablet {
+        font: $tLabels;
+        height: 34px;
+        margin: 0;
+    }
 }
 
 @mixin trip-status-active {
     @include trip-status-inactive;
-    background-color: colors.$info;
+    background-color: colors.$yellow;
 }
 
 @mixin trip-status-completed {
     @include trip-status-inactive;
-    background-color: colors.$success;
+    background-color: colors.$green;
 }

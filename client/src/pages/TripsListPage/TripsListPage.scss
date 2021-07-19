@@ -9,29 +9,57 @@
     min-height: 100vh;
     background-color: colors.$ink-6;
 
+    @include tablet {
+        padding: $padding*2;
+    }
+
+    @include desktop {
+        width: 1080px;
+        align-self: center;
+    }
+
     &__header {
         display: flex;
         flex-direction: column;
         margin-bottom: $margin*1.5;
+
+        @include tablet {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
     }
 
     &__title {
         font: $mPageHeader;
         margin-bottom: $margin*0.5;
-    }
 
-    &__account{
-        // &-link {}
-
-        &-img {
-            display: flex;
-            width: 30px;
-            height: auto;
+        @include tablet {
+            font: $tPageHeader;
+            margin-bottom: 0;
         }
     }
 
     &__btn {
         @include primary-button;
+    }
+
+    &__filter{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: $margin*1.5;
+
+        @include tablet {
+            justify-content: center;
+        }
+
+        &-btn {
+            @include form-button;
+
+            @include tablet {
+                margin: 0 $margin*0.5;
+            }
+        }
     }
 }
 
@@ -47,12 +75,20 @@
         margin-bottom: $margin;
         box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
         overflow: hidden;
+
+        @include tablet {
+            flex-direction: row;
+        }
     }
 
     &__info {
         display: flex;
         flex-wrap: wrap;
         padding: $padding;
+
+        @include tablet {
+            width: 80%;
+        }
     }
 
     &__header {
@@ -62,6 +98,24 @@
         width: 100%;
         order: 1;
         margin-bottom: $margin*0.5;
+
+        @include tablet {
+            width: 60%;
+            margin-bottom: 0;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+    
+    // &__name {}
+    &__link {
+        font: $mSubheader;
+        text-decoration: none;
+        color: colors.$ink-1;
+
+        @include tablet {
+            font: $tSubheader;
+        }
     }
 
     &__status {
@@ -83,43 +137,59 @@
         flex-direction: column;
         width: 50%;
         order: 3;
+
+        @include tablet {
+            width: 20%;
+            justify-content: center;
+            align-items: center;
+        }
     }
 
+    &__title {
+        font: $mLabels;
+        color: colors.$ink-2;
+
+        @include tablet {
+            font: $tLabels;
+        }
+    }
+    
+    
+    &__departure {
+        font: $mBodyLarge;
+
+        @include tablet {
+            font: $tBodyLarge;
+        }
+    }
+    
+    &__return {
+        font: $mBodyLarge;
+
+        @include tablet {
+            font: $tBodyLarge;
+        }
+    }
+    
     &__buttons {
         display: flex;
         justify-content: space-between;
         width: 100%;
         padding: $padding;
         background-color: colors.$ink-6;
-    }
 
-    &__title {
-        font: $mLabels;
-        color: colors.$ink-2;
-    }
-
-    // &__name {}
-    &__link {
-        font: $mSubheader;
-        font-weight: 700;
-        text-decoration: none;
-        color: colors.$ink-1;
-    }
-
-    &__departure {
-        font: $mBodyLarge;
-    }
-
-    &__return {
-        font: $mBodyLarge;
-    }
-
-    &__location {
-        font: $mBodyLarge;
+        @include tablet {
+            flex-direction: column;
+            width: 20%;
+        }
     }
 
     &__edit-link {
         @include form-button;
+
+        @include tablet {
+            margin-bottom: $margin*0.5;
+        }
     }
     &__delete {
         @include form-button;

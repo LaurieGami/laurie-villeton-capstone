@@ -3,17 +3,42 @@
 @use '../../styles/partials/colors';
 
 .trip-details-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: $padding;
+    min-height: 90vh;
+
+    @include tablet {
+        padding: $padding*2;
+    }
+
+    @include desktop {
+        width: 1080px;
+        align-self: center;
+        padding: $padding*2 0;
+    }
 
     &__header {
         display: flex;
         flex-direction: column;
         margin-bottom: $margin*1.5;
+
+        @include tablet {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
     }
 
     &__title {
         font: $mPageHeader;
         margin-bottom: $margin*0.5;
+
+        @include tablet {
+            font: $tPageHeader;
+            margin-bottom: 0;
+        }
     }
 
     &__btn {
@@ -33,10 +58,19 @@
     &__title {
         font: $mBodyLarge;
         font-weight: 700;
+
+        @include tablet {
+            font: $tBodyLarge;
+            font-weight: 700;
+        }
     }
 
     &__subtitle {
         font: $mLabels;
+
+        @include tablet {
+            font: $tLabels;
+        }
     }
 
     &__status {
@@ -67,7 +101,7 @@
 
     &__section {
         border-radius: $border-radius*2;
-        background-color: colors.$accent-yellow;
+        background-color: colors.$accent-blue;
         margin-bottom: $margin;
         box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
         overflow: hidden;
@@ -82,6 +116,33 @@
 
     &__name {
         font: $mSubheader;
+
+        @include tablet {
+            font: $tSubheader;
+        }
+    }
+
+    &__group {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+
+        &-item{
+            padding: $padding*0.25;
+            width: 50%;
+
+            @include tablet {
+                width: 25%;
+            }
+        }
+    }
+
+    &__text {
+        font: $mBodyLarge;
+
+        @include tablet {
+            font: $mBodyLarge;
+        }
     }
 }
 
@@ -92,13 +153,17 @@
     &__title {
         font: $mSubheader;
         margin: $margin 0;
+
+        @include tablet {
+            font: $tSubheader;
+        }
     }
 }
 
 .trip-comments-form {
     display: flex;
     flex-direction: column;
-    background-color: colors.$accent-orange;
+    background-color: colors.$accent-yellow;
     border-radius: $border-radius*2;
     margin-bottom: $margin;
     box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
@@ -108,6 +173,11 @@
     &__label {
         font: $mBodyLarge;
         font-weight: 700;
+
+        @include tablet {
+            font: $tBodyLarge;
+            font-weight: 700;
+        }
     }
 
     &__input {
@@ -140,7 +210,7 @@
 .comment {
     display: flex;
     flex-direction: column;
-    background-color: colors.$accent-orange;
+    background-color: colors.$accent-yellow;
     border-radius: $border-radius*2;
     margin-bottom: $margin;
     box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
@@ -167,14 +237,27 @@
     &__name {
         font: $mBodyLarge;
         font-weight: 700;
+
+        @include tablet {
+            font: $tBodyLarge;
+            font-weight: 700;
+        }
     }
 
     &__time {
         font: $mBodyMedium;
+
+        @include tablet {
+            font: $tBodyMedium;
+        }
     }
 
     &__text {
         font: $mBodyLarge;
+
+        @include tablet {
+            font: $tBodyLarge;
+        }
     }
 
     &__delete-btn {

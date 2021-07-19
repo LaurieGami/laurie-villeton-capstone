@@ -7,7 +7,6 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
-import NavBar from "../../components/NavBar/NavBar";
 import plusIcon from "../../assets/icons/add-more-plus.svg";
 
 const baseUrl = 'http://localhost:5000/api';
@@ -157,7 +156,6 @@ function EditTripPage() {
 
     return (
         <>
-            <NavBar />
             <main className="edit-trip-page">
                 {isLoading &&
                     <h1>Loading...</h1>

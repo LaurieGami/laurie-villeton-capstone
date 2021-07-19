@@ -5,8 +5,11 @@
 .header {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     padding: $padding 0;
+    min-height: 10vh;
+    background-color: colors.$ink-6;
 
     &__logo {
         display: flex;
