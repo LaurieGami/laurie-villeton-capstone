@@ -8,10 +8,10 @@ import homepageIllustration from '../../assets/images/Black Man and Woman Nature
 class HomePage extends Component {
     
     componentDidMount() {
-        const { isLoggedIn } = this.props;
+        const { authToken } = this.props;
 
-        if (isLoggedIn) {
-            this.props.history.push(`/profile`);
+        if (authToken) {
+            this.props.history.push(`/trips`);
         }
     }
     

@@ -8,18 +8,16 @@ import axios from 'axios';
 
 import registerIllustration from '../../assets/images/Black Couple Outdoors.png';
 
-const baseUrl = 'http://localhost:5000/api';
-
 function RegisterPage(props) {
     const [errorMessage, setErrorMessage] = useState('');
     let history = useHistory();
-    const { isLoggedIn, setAuthToken } = props;
+    const { authToken, setAuthToken } = props;
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (!!authToken) {
             history.push(`/trips`);
         }
-    }, [isLoggedIn, history]);
+    }, [authToken, history]);
 
     const RegisterSchema = Yup.object().shape({
         firstName: Yup.string()
@@ -55,7 +53,7 @@ function RegisterPage(props) {
 
         const formattedPhone = "+1" + phone;
 
-        axios.post(`${baseUrl}/register`, {
+        axios.post(`/register`, {
             firstName: firstName,
             lastName: lastName,
             email: email,

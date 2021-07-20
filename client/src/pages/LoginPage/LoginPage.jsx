@@ -8,18 +8,16 @@ import axios from 'axios';
 
 import loginIllustration from '../../assets/images/Black Couple RV Trip.png';
 
-const baseUrl = 'http://localhost:5000/api';
-
 function LoginPage(props) {
     const [errorMessage, setErrorMessage] = useState('');
     let history = useHistory();
-    const { isLoggedIn, setAuthToken } = props;
+    const { authToken, setAuthToken } = props;
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (!!authToken) {
             history.push(`/trips`);
         }
-    }, [isLoggedIn, history]);
+    }, [authToken, history]);
 
     const LoginSchema = Yup.object().shape({
         email: Yup.string()
@@ -32,7 +30,7 @@ function LoginPage(props) {
     const login = (values) => {
         const { email, password } = values;
 
-        axios.post(`${baseUrl}/login`, {
+        axios.post(`/login`, {
             email: email,
             password: password
         }).then(res => {
@@ -53,7 +51,7 @@ function LoginPage(props) {
                 <h1 className="login-page__title">Login</h1>
                 <Formik
                     initialValues={{
-                        email: 'laurie@test.ca',
+                        email: 'laurievilleton@gmail.com',
                         password: '12345678'
                     }}
                     validationSchema={LoginSchema}

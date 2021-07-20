@@ -61,6 +61,14 @@
             }
         }
     }
+
+    &__error-message {
+        @include error-notification;
+
+        &-icon {
+            @include small-icon;
+        }
+    }
 }
 
 .trip-list {

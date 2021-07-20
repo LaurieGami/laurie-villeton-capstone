@@ -11,6 +11,11 @@
     min-height: 10vh;
     background-color: colors.$ink-6;
 
+    &__link {
+        text-decoration: none;
+        color: colors.$ink-1;
+    }
+
     &__logo {
         display: flex;
         align-items: center;

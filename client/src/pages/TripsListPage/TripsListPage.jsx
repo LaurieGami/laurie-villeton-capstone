@@ -5,23 +5,23 @@ import axios from 'axios';
 
 import { dateToLocale } from '../../utils/date';
 
-const baseUrl = 'http://localhost:5000/api';
-
 class TripsListPage extends Component {
     state = {
         isLoading: true,
         userTrips: [],
-        selectedTrips: ""
+        selectedTrips: "",
+        errorMessage: ''
     }
 
-    logOut = () => {
-        sessionStorage.removeItem('authToken');
-        this.props.setIsLoggedIn(false);
-        this.props.history.push(`/`);
-    }
+    // logOut = () => {
+    //     sessionStorage.removeItem('authToken');
+    //     this.props.setAuthToken('');
+    //     this.props.history.push(`/`);
+    // }
 
     getUserTrips = (authToken) => {
-        axios.get(`${baseUrl}/trips`, {
+        axios
+        .get(`/trips`, {
             headers: {
                 authorization: `Bearer ${authToken}`
             }
@@ -31,21 +31,29 @@ class TripsListPage extends Component {
                 selectedTrips: "all",
                 userTrips: res.data
             });
-        }).catch(() => this.logOut());
+        }).catch(err => {
+            this.setState({
+                errorMessage: err.response.data.message
+            })
+        });
     }
 
     deleteUserTrip = (tripId) => {
         axios
-            .delete(`${baseUrl}/trips/${tripId}`,
-                {
-                    headers: {
-                        authorization: `Bearer ${this.props.authToken}`
-                    }
-                })
-            .then(() => {
-                this.getUserTrips(this.props.authToken);
+        .delete(`/trips/${tripId}`,
+            {
+                headers: {
+                    authorization: `Bearer ${this.props.authToken}`
+                }
             })
-            .catch((err) => console.log("Error: ", err));
+        .then(() => {
+            this.getUserTrips(this.props.authToken);
+        })
+        .catch(err => {
+            this.setState({
+                errorMessage: err.response.data.message
+            })
+        });
     }
 
     filteredTrips = (filter) => {
@@ -61,7 +69,7 @@ class TripsListPage extends Component {
     }
 
     render() {
-        const { isLoading, selectedTrips } = this.state;
+        const { isLoading, selectedTrips, errorMessage } = this.state;
 
         return (
             <>
@@ -119,6 +127,14 @@ class TripsListPage extends Component {
                                     </div>
                                 )
                             })
+                        }
+                        {errorMessage &&
+                            <div className="trips-list-page__error-message">
+                                <svg className="trips-list-page__error-message-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path className="trips-list-page__error-message-icon-path" d="M1 21H23L12 2L1 21ZM13 18H11V16H13V18ZM13 14H11V10H13V14Z" fill="#191D21" />
+                                </svg>
+                                {errorMessage}
+                            </div>
                         }
                     </section>
                 </main>

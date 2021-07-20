@@ -1,7 +1,7 @@
 import "./AddTripPage.scss";
 // import { Link } from "react-router-dom";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
@@ -9,18 +9,11 @@ import axios from 'axios';
 
 import plusIcon from "../../assets/icons/add-more-plus.svg";
 
-const baseUrl = 'http://localhost:5000/api';
-
 function AddTripPage(props) {
-    const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
 
     let history = useHistory();
     const { authToken } = props;
-
-    useEffect(() => {
-        setIsLoading(false);
-    }, [history]);
 
     const AddTripSchema = Yup.object().shape({
         name: Yup.string()
@@ -80,7 +73,7 @@ function AddTripPage(props) {
             return newDate;
         };
 
-        axios.post(`${baseUrl}/trips`,
+        axios.post(`/trips`,
             {
                 name: name,
                 participants: participants,
@@ -108,9 +101,6 @@ function AddTripPage(props) {
     return (
         <>
             <main className="add-trip-page">
-                {isLoading &&
-                    <h2>Loading...</h2>
-                }
                 <h1 className="add-trip-page__title">Let's start a new trip!</h1>
                 <p className="add-trip-page__text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea, omnis molestias! Eaque quibusdam, suscipit iste sapiente ducimus, soluta aperiam culpa nihil aliquid hic ea sed quaerat consequuntur quod ratione itaque?</p>
                 <Formik
@@ -131,7 +121,7 @@ function AddTripPage(props) {
                         postTripInfo(values);
                     }}
                 >
-                    {({ values, initialValues, errors, touched }) => (
+                    {({ values, errors, touched }) => (
                         <Form className="add-trip-form">
 
                             <div className="add-trip-form__section">

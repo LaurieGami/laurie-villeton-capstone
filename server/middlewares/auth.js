@@ -10,7 +10,7 @@ const authorize = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
 
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
-        if (err) return res.status(401).json({ message: 'The token is invalid' });
+        if (err) return res.status(401).json({ message: 'The authentication token is invalid' });
 
         req.decoded = decoded;
         next();

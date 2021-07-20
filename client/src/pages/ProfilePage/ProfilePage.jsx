@@ -2,8 +2,6 @@ import "./ProfilePage.scss";
 import { Component } from "react";
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:5000/api';
-
 class ProfilePage extends Component {
     state = {
         isLoading: true,
@@ -12,12 +10,12 @@ class ProfilePage extends Component {
 
     logOut = () => {
         sessionStorage.removeItem('authToken');
-        this.props.setIsLoggedIn(false);
+        this.props.setAuthToken('');
         this.props.history.push(`/`);
     }
 
     getUserInfo = (authToken) => {
-        axios.get(`${baseUrl}/profile`, {
+        axios.get(`/profile`, {
             headers: {
                 authorization: `Bearer ${authToken}`
             }

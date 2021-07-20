@@ -28,11 +28,11 @@ function App() {
     <BrowserRouter>
       <Header isLoggedIn={isLoggedIn}/>
       <Switch>
-        <Route exact path="/" render={(props) => <HomePage isLoggedIn={isLoggedIn} {...props} />} />
-        <Route path="/register" render={(props) => <RegisterPage isLoggedIn={isLoggedIn} setAuthToken={setAuthToken} {...props} />} />
-        <Route path="/login" render={(props) => <LoginPage isLoggedIn={isLoggedIn} setAuthToken={setAuthToken} {...props} />} />
-        <Route path="/profile" render={(props) => <ProfilePage authToken={authToken} setIsLoggedIn={setIsLoggedIn} {...props} />} />
-        <Route exact path="/trips" render={(props) => <TripsListPage authToken={authToken} setIsLoggedIn={setIsLoggedIn} {...props} />} />
+        <Route exact path="/" render={(props) => <HomePage authToken={authToken} {...props} />} />
+        <Route path="/register" render={(props) => <RegisterPage authToken={authToken} setAuthToken={setAuthToken} {...props} />} />
+        <Route path="/login" render={(props) => <LoginPage authToken={authToken} setAuthToken={setAuthToken} {...props} />} />
+        <Route path="/profile" render={(props) => <ProfilePage authToken={authToken} setAuthToken={setAuthToken} {...props} />} />
+        <Route exact path="/trips" render={(props) => <TripsListPage authToken={authToken} setAuthToken={setAuthToken} {...props} />} />
         <Route exact path="/trips/add" render={(props) => <AddTripPage authToken={authToken} {...props} />} />
         <Route exact path="/trips/:tripId" render={(props) => <TripDetailsPage isLoggedIn={isLoggedIn} {...props} />} />
         <Route exact path="/trips/:tripId/edit" render={(props) => <EditTripPage authToken={authToken} {...props} />} />

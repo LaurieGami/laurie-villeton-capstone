@@ -9,8 +9,6 @@ import axios from 'axios';
 
 import plusIcon from "../../assets/icons/add-more-plus.svg";
 
-const baseUrl = 'http://localhost:5000/api';
-
 function EditTripPage(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
@@ -42,7 +40,7 @@ function EditTripPage(props) {
             return newDate;
         };
 
-        axios.get(`${baseUrl}/trips/${tripId}`)
+        axios.get(`/trips/${tripId}`)
             .then(res => {
                 setIsLoading(false);
                 setTripDetails(
@@ -127,7 +125,7 @@ function EditTripPage(props) {
             return newDate;
         };
 
-        axios.put(`${baseUrl}/trips/${tripId}`,
+        axios.put(`/trips/${tripId}`,
             {
                 name: name,
                 participants: participants,
