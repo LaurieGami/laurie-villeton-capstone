@@ -14,8 +14,9 @@ class TripsListPage extends Component {
         selectedTrips: ""
     }
 
-    handleAuthFail = () => {
+    logOut = () => {
         sessionStorage.removeItem('authToken');
+        this.props.setIsLoggedIn(false);
         this.props.history.push(`/`);
     }
 
@@ -30,23 +31,21 @@ class TripsListPage extends Component {
                 selectedTrips: "all",
                 userTrips: res.data
             });
-        }).catch(() => this.handleAuthFail());
+        }).catch(() => this.logOut());
     }
 
     deleteUserTrip = (tripId) => {
-        const authToken = sessionStorage.getItem('authToken');
-
         axios
             .delete(`${baseUrl}/trips/${tripId}`,
                 {
                     headers: {
-                        authorization: `Bearer ${authToken}`
+                        authorization: `Bearer ${this.props.authToken}`
                     }
                 })
             .then(() => {
-                this.getUserTrips(authToken);
+                this.getUserTrips(this.props.authToken);
             })
-            .catch((err) => console.log("Oops", err));
+            .catch((err) => console.log("Error: ", err));
     }
 
     filteredTrips = (filter) => {
@@ -58,9 +57,7 @@ class TripsListPage extends Component {
     }
 
     componentDidMount() {
-        const authToken = sessionStorage.getItem('authToken');
-
-        this.getUserTrips(authToken);
+        this.getUserTrips(this.props.authToken);
     }
 
     render() {
@@ -85,7 +82,7 @@ class TripsListPage extends Component {
                     {/* TripList Component */}
                     <section className="trip-list">
                         {isLoading &&
-                            <h1>Loading...</h1>
+                            <h2>Loading...</h2>
                         }
                         {!isLoading &&
                             this.filteredTrips(selectedTrips)

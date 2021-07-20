@@ -12,6 +12,7 @@ class ProfilePage extends Component {
 
     logOut = () => {
         sessionStorage.removeItem('authToken');
+        this.props.setIsLoggedIn(false);
         this.props.history.push(`/`);
     }
 
@@ -29,9 +30,7 @@ class ProfilePage extends Component {
     }
 
     componentDidMount() {
-        const authToken = sessionStorage.getItem('authToken');
-
-        this.getUserInfo(authToken);
+        this.getUserInfo(this.props.authToken);
     }
 
     render() {
@@ -49,15 +48,12 @@ class ProfilePage extends Component {
                 {/* Profile Info Component */}
                 <article className="profile-info-container">
                     {isLoading &&
-                        <h1>Loading...</h1>
+                        <h2>Loading...</h2>
                     }
                     {!isLoading && 
                         <article className="profile-info">
                             <section className="profile-info__header">
                                 <h2 className="profile-info__name">{userInfo.firstName} {userInfo.lastName}</h2>
-                                {/* <div className="profile-info__buttons">
-                                    <button onClick={() => this.logOut()} className="profile-info__btn">Logout</button>
-                                </div> */}
                             </section>
                             <p className="profile-info__email">{userInfo.email}</p>
                             <p className="profile-info__phone">{userInfo.phone}</p>

@@ -11,11 +11,12 @@ import plusIcon from "../../assets/icons/add-more-plus.svg";
 
 const baseUrl = 'http://localhost:5000/api';
 
-function AddTripPage() {
+function AddTripPage(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
 
     let history = useHistory();
+    const { authToken } = props;
 
     useEffect(() => {
         setIsLoading(false);
@@ -59,8 +60,6 @@ function AddTripPage() {
     const suppliesList = ['First Aid Kit', 'Flashlight', 'Map & Compass', 'Firestarter', 'Food & Water'];
 
     const postTripInfo = (values) => {
-        const authToken = sessionStorage.getItem('authToken');
-
         const {
             name,
             participants,
@@ -100,8 +99,8 @@ function AddTripPage() {
                 }
             }
         )
-            .then(() => {
-                history.push('/trips');
+            .then((newTrip) => {
+                history.push(`/trips/${newTrip.data.id}`);
             })
             .catch((err) => setErrorMessage(err.response.data.message));
     }
@@ -110,7 +109,7 @@ function AddTripPage() {
         <>
             <main className="add-trip-page">
                 {isLoading &&
-                    <h1>Loading...</h1>
+                    <h2>Loading...</h2>
                 }
                 <h1 className="add-trip-page__title">Let's start a new trip!</h1>
                 <p className="add-trip-page__text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea, omnis molestias! Eaque quibusdam, suscipit iste sapiente ducimus, soluta aperiam culpa nihil aliquid hic ea sed quaerat consequuntur quod ratione itaque?</p>

@@ -1,21 +1,11 @@
 import "./Header.scss";
 
-import { useState, useEffect } from 'react';
-
 import NavBar from "../NavBar/NavBar";
 
 import compassIcon from '../../assets/icons/compass-icon.svg';
 
-function Header() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    
-    // const authToken = sessionStorage.getItem('authToken');
-    
-    useEffect(() => {
-        // if (authToken) {
-            setIsLoggedIn(true);
-        // }
-    }, [isLoggedIn]);
+function Header(props) {
+    const { isLoggedIn } = props;
 
     return (
         <>
@@ -25,7 +15,7 @@ function Header() {
                     <h2 className="header__logo-text">Smart Adventures</h2>
                 </div>
             </header>
-            {!!isLoggedIn &&
+            {isLoggedIn &&
                 <NavBar />
             }
         </>

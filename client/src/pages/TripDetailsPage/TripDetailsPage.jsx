@@ -11,7 +11,6 @@ const baseUrl = 'http://localhost:5000/api';
 
 class TripDetailsPage extends Component {
     state = {
-        isLoggedIn: false,
         isLoading: true,
 
         tripDetails: {
@@ -99,19 +98,12 @@ class TripDetailsPage extends Component {
     }
 
     componentDidMount() {
-        const authToken = sessionStorage.getItem('authToken');
-
-        if (authToken) {
-            this.setState({
-                isLoggedIn: true
-            })
-        }
-
         this.getTripInfo(this.props.match.params.tripId);
     }
 
     render() {
-        const { isLoggedIn, isLoading, tripDetails } = this.state;
+        const { isLoading, tripDetails } = this.state;
+        const { isLoggedIn } = this.props;
 
         const { id,
             name,
