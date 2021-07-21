@@ -1,6 +1,7 @@
 import './App.scss';
 
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { useState } from 'react';
 
 import Header from './components/Header/Header';
 import HomePage from './pages/HomePage/HomePage';
@@ -13,21 +14,23 @@ import AddTripPage from './pages/AddTripPage/AddTripPage';
 import EditTripPage from './pages/EditTripPage/EditTripPage';
 
 function App() {
-    return (
-      <BrowserRouter>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/register" component={RegisterPage} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/profile" component={ProfilePage} />
-          <Route exact path="/trips" component={TripsListPage} />
-          <Route exact path="/trips/add" component={AddTripPage} />
-          <Route exact path="/trips/:tripId" component={TripDetailsPage} />
-          <Route exact path="/trips/:tripId/edit" component={EditTripPage} />
-        </Switch>
-      </BrowserRouter>
-    )
+  const [authToken, setAuthToken] = useState(sessionStorage.getItem('authToken'));
+
+  return (
+    <BrowserRouter>
+      <Header authToken={authToken} />
+      <Switch>
+        <Route exact path="/" render={(props) => <HomePage authToken={authToken} {...props} />} />
+        <Route path="/register" render={(props) => <RegisterPage authToken={authToken} setAuthToken={setAuthToken} {...props} />} />
+        <Route path="/login" render={(props) => <LoginPage authToken={authToken} setAuthToken={setAuthToken} {...props} />} />
+        <Route path="/profile" render={(props) => <ProfilePage authToken={authToken} setAuthToken={setAuthToken} {...props} />} />
+        <Route exact path="/trips" render={(props) => <TripsListPage authToken={authToken} setAuthToken={setAuthToken} {...props} />} />
+        <Route exact path="/trips/add" render={(props) => <AddTripPage authToken={authToken} {...props} />} />
+        <Route exact path="/trips/:tripId" render={(props) => <TripDetailsPage authToken={authToken} {...props} />} />
+        <Route exact path="/trips/:tripId/edit" render={(props) => <EditTripPage authToken={authToken} {...props} />} />
+      </Switch>
+    </BrowserRouter>
+  )
 }
 
 export default App;

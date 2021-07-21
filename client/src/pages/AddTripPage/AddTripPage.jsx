@@ -1,25 +1,21 @@
 import "./AddTripPage.scss";
 // import { Link } from "react-router-dom";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
+import { activitiesList, suppliesList } from '../../utils/list';
+
 import plusIcon from "../../assets/icons/add-more-plus.svg";
 
-const baseUrl = 'http://localhost:5000/api';
-
-function AddTripPage() {
-    const [isLoading, setIsLoading] = useState(true);
+function AddTripPage(props) {
     const [errorMessage, setErrorMessage] = useState('');
 
     let history = useHistory();
-
-    useEffect(() => {
-        setIsLoading(false);
-    }, [history]);
+    const { authToken } = props;
 
     const AddTripSchema = Yup.object().shape({
         name: Yup.string()
@@ -55,12 +51,7 @@ function AddTripPage() {
             .max(255, 'Additional Info not belonger than 255 characters')
     });
 
-    const activitiesList = ['Day Hike', 'Overnight Hike', 'Camping', 'Kayaking'];
-    const suppliesList = ['First Aid Kit', 'Flashlight', 'Map & Compass', 'Firestarter', 'Food & Water'];
-
     const postTripInfo = (values) => {
-        const authToken = sessionStorage.getItem('authToken');
-
         const {
             name,
             participants,
@@ -81,7 +72,7 @@ function AddTripPage() {
             return newDate;
         };
 
-        axios.post(`${baseUrl}/trips`,
+        axios.post(`/trips`,
             {
                 name: name,
                 participants: participants,
@@ -100,8 +91,8 @@ function AddTripPage() {
                 }
             }
         )
-            .then(() => {
-                history.push('/trips');
+            .then((newTrip) => {
+                history.push(`/trips/${newTrip.data.id}`);
             })
             .catch((err) => setErrorMessage(err.response.data.message));
     }
@@ -109,9 +100,6 @@ function AddTripPage() {
     return (
         <>
             <main className="add-trip-page">
-                {isLoading &&
-                    <h1>Loading...</h1>
-                }
                 <h1 className="add-trip-page__title">Let's start a new trip!</h1>
                 <p className="add-trip-page__text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea, omnis molestias! Eaque quibusdam, suscipit iste sapiente ducimus, soluta aperiam culpa nihil aliquid hic ea sed quaerat consequuntur quod ratione itaque?</p>
                 <Formik
@@ -132,7 +120,7 @@ function AddTripPage() {
                         postTripInfo(values);
                     }}
                 >
-                    {({ values, initialValues, errors, touched }) => (
+                    {({ values, errors, touched }) => (
                         <Form className="add-trip-form">
 
                             <div className="add-trip-form__section">

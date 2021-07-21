@@ -7,11 +7,8 @@ import axios from 'axios';
 
 import { timeAgo, dateToLocale, timeToLocale } from '../../utils/date';
 
-const baseUrl = 'http://localhost:5000/api';
-
 class TripDetailsPage extends Component {
     state = {
-        isLoggedIn: false,
         isLoading: true,
 
         tripDetails: {
@@ -33,7 +30,7 @@ class TripDetailsPage extends Component {
     }
 
     getTripInfo = (tripId) => {
-        axios.get(`${baseUrl}/trips/${tripId}`)
+        axios.get(`/trips/${tripId}`)
             .then(res => {
                 this.setState({
                     isLoading: false,
@@ -77,7 +74,7 @@ class TripDetailsPage extends Component {
             trip_id
         } = values;
 
-        axios.post(`${baseUrl}/comments/${trip_id}`,
+        axios.post(`/comments/${trip_id}`,
             {
                 username: username,
                 comment: comment,
@@ -91,7 +88,7 @@ class TripDetailsPage extends Component {
     }
 
     deleteComment = (tripId, commentId) => {
-        axios.delete(`${baseUrl}/comments/${commentId}`)
+        axios.delete(`/comments/${commentId}`)
         .then(() => {
             this.getTripInfo(tripId);
         })
@@ -99,19 +96,12 @@ class TripDetailsPage extends Component {
     }
 
     componentDidMount() {
-        const authToken = sessionStorage.getItem('authToken');
-
-        if (authToken) {
-            this.setState({
-                isLoggedIn: true
-            })
-        }
-
         this.getTripInfo(this.props.match.params.tripId);
     }
 
     render() {
-        const { isLoggedIn, isLoading, tripDetails } = this.state;
+        const { isLoading, tripDetails } = this.state;
+        const { authToken } = this.props;
 
         const { id,
             name,
@@ -132,7 +122,7 @@ class TripDetailsPage extends Component {
                 <main className="trip-details-page">
                     <section className="trip-details-page__header">
                         <h1 className="trip-details-page__title">Trip Details</h1>
-                        {isLoggedIn &&
+                        {!!authToken &&
                             <Link to={`/trips/${id}/edit`} className="trip-details-page__btn">
                                 Edit
                             </Link>

@@ -1,5 +1,4 @@
 import "./EditTripPage.scss";
-// import { Link } from "react-router-dom";
 
 import { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
@@ -7,11 +6,11 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
+import { activitiesList, suppliesList, statusList } from '../../utils/list';
+
 import plusIcon from "../../assets/icons/add-more-plus.svg";
 
-const baseUrl = 'http://localhost:5000/api';
-
-function EditTripPage() {
+function EditTripPage(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
     const [tripDetails, setTripDetails] = useState({
@@ -30,6 +29,7 @@ function EditTripPage() {
 
     let history = useHistory();
     let params = useParams();
+    const { authToken } = props;
 
     useEffect(() => {
         getTripInfo(params.tripId)
@@ -41,7 +41,7 @@ function EditTripPage() {
             return newDate;
         };
 
-        axios.get(`${baseUrl}/trips/${tripId}`)
+        axios.get(`/trips/${tripId}`)
             .then(res => {
                 setIsLoading(false);
                 setTripDetails(
@@ -63,7 +63,7 @@ function EditTripPage() {
                     }
                 );
             })
-            .catch((err) => console.log("Couldn't retrieve trip information", err));
+            .catch((err) => setErrorMessage(err.response.data.message));
     }
 
     const AddTripSchema = Yup.object().shape({
@@ -100,13 +100,7 @@ function EditTripPage() {
             .max(255, 'Additional Info not belonger than 255 characters')
     });
 
-    const activitiesList = ['Day Hike', 'Overnight Hike', 'Camping', 'Kayaking'];
-    const suppliesList = ['First Aid Kit', 'Flashlight', 'Map & Compass', 'Firestarter', 'Food & Water'];
-    const statusList = ['inactive', 'active', 'completed'];
-
     const editTripInfo = (values, tripId) => {
-        const authToken = sessionStorage.getItem('authToken');
-
         const {
             name,
             participants,
@@ -128,7 +122,7 @@ function EditTripPage() {
             return newDate;
         };
 
-        axios.put(`${baseUrl}/trips/${tripId}`,
+        axios.put(`/trips/${tripId}`,
             {
                 name: name,
                 participants: participants,
@@ -158,23 +152,11 @@ function EditTripPage() {
         <>
             <main className="edit-trip-page">
                 {isLoading &&
-                    <h1>Loading...</h1>
+                    <h2>Loading...</h2>
                 }
                 <h1 className="edit-trip-page__title">Edit your trip</h1>
                 <p className="edit-trip-page__text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea, omnis molestias! Eaque quibusdam, suscipit iste sapiente ducimus, soluta aperiam culpa nihil aliquid hic ea sed quaerat consequuntur quod ratione itaque?</p>
                 <Formik
-                    // initialValues={{
-                    //     name: "",
-                    //     participants: [{ firstName: "", lastName: "", email: "", phone: "" }],
-                    //     emergency_contacts: [{ firstName: "", lastName: "", email: "", phone: "" }],
-                    //     departure_date: "",
-                    //     return_date: "",
-                    //     location: "",
-                    //     purpose: "",
-                    //     activities: [],
-                    //     supplies: [],
-                    //     add_info: ""
-                    // }}
                     initialValues={tripDetails}
                     enableReinitialize={true}
                     validationSchema={AddTripSchema}
@@ -182,7 +164,7 @@ function EditTripPage() {
                         editTripInfo(values, params.tripId);
                     }}
                 >
-                    {({ values, initialValues, errors, touched }) => (
+                    {({ values, errors, touched }) => (
                         <Form className="edit-trip-form">
 
                             <div className="edit-trip-form__section">

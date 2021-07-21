@@ -5,22 +5,23 @@ import axios from 'axios';
 
 import { dateToLocale } from '../../utils/date';
 
-const baseUrl = 'http://localhost:5000/api';
-
 class TripsListPage extends Component {
     state = {
         isLoading: true,
         userTrips: [],
-        selectedTrips: ""
+        selectedTrips: "",
+        errorMessage: ''
     }
 
-    handleAuthFail = () => {
-        sessionStorage.removeItem('authToken');
-        this.props.history.push(`/`);
-    }
+    // logOut = () => {
+    //     sessionStorage.removeItem('authToken');
+    //     this.props.setAuthToken('');
+    //     this.props.history.push(`/`);
+    // }
 
     getUserTrips = (authToken) => {
-        axios.get(`${baseUrl}/trips`, {
+        axios
+        .get(`/trips`, {
             headers: {
                 authorization: `Bearer ${authToken}`
             }
@@ -30,23 +31,29 @@ class TripsListPage extends Component {
                 selectedTrips: "all",
                 userTrips: res.data
             });
-        }).catch(() => this.handleAuthFail());
+        }).catch(err => {
+            this.setState({
+                errorMessage: err.response.data.message
+            })
+        });
     }
 
     deleteUserTrip = (tripId) => {
-        const authToken = sessionStorage.getItem('authToken');
-
         axios
-            .delete(`${baseUrl}/trips/${tripId}`,
-                {
-                    headers: {
-                        authorization: `Bearer ${authToken}`
-                    }
-                })
-            .then(() => {
-                this.getUserTrips(authToken);
+        .delete(`/trips/${tripId}`,
+            {
+                headers: {
+                    authorization: `Bearer ${this.props.authToken}`
+                }
             })
-            .catch((err) => console.log("Oops", err));
+        .then(() => {
+            this.getUserTrips(this.props.authToken);
+        })
+        .catch(err => {
+            this.setState({
+                errorMessage: err.response.data.message
+            })
+        });
     }
 
     filteredTrips = (filter) => {
@@ -58,13 +65,11 @@ class TripsListPage extends Component {
     }
 
     componentDidMount() {
-        const authToken = sessionStorage.getItem('authToken');
-
-        this.getUserTrips(authToken);
+        this.getUserTrips(this.props.authToken);
     }
 
     render() {
-        const { isLoading, selectedTrips } = this.state;
+        const { isLoading, selectedTrips, errorMessage } = this.state;
 
         return (
             <>
@@ -85,7 +90,7 @@ class TripsListPage extends Component {
                     {/* TripList Component */}
                     <section className="trip-list">
                         {isLoading &&
-                            <h1>Loading...</h1>
+                            <h2>Loading...</h2>
                         }
                         {!isLoading &&
                             this.filteredTrips(selectedTrips)
@@ -122,6 +127,14 @@ class TripsListPage extends Component {
                                     </div>
                                 )
                             })
+                        }
+                        {errorMessage &&
+                            <div className="trips-list-page__error-message">
+                                <svg className="trips-list-page__error-message-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path className="trips-list-page__error-message-icon-path" d="M1 21H23L12 2L1 21ZM13 18H11V16H13V18ZM13 14H11V10H13V14Z" fill="#191D21" />
+                                </svg>
+                                {errorMessage}
+                            </div>
                         }
                     </section>
                 </main>

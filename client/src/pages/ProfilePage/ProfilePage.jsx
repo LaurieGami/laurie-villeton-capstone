@@ -2,8 +2,6 @@ import "./ProfilePage.scss";
 import { Component } from "react";
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:5000/api';
-
 class ProfilePage extends Component {
     state = {
         isLoading: true,
@@ -12,11 +10,12 @@ class ProfilePage extends Component {
 
     logOut = () => {
         sessionStorage.removeItem('authToken');
+        this.props.setAuthToken('');
         this.props.history.push(`/`);
     }
 
     getUserInfo = (authToken) => {
-        axios.get(`${baseUrl}/profile`, {
+        axios.get(`/profile`, {
             headers: {
                 authorization: `Bearer ${authToken}`
             }
@@ -29,9 +28,7 @@ class ProfilePage extends Component {
     }
 
     componentDidMount() {
-        const authToken = sessionStorage.getItem('authToken');
-
-        this.getUserInfo(authToken);
+        this.getUserInfo(this.props.authToken);
     }
 
     render() {
@@ -49,15 +46,12 @@ class ProfilePage extends Component {
                 {/* Profile Info Component */}
                 <article className="profile-info-container">
                     {isLoading &&
-                        <h1>Loading...</h1>
+                        <h2>Loading...</h2>
                     }
                     {!isLoading && 
                         <article className="profile-info">
                             <section className="profile-info__header">
                                 <h2 className="profile-info__name">{userInfo.firstName} {userInfo.lastName}</h2>
-                                {/* <div className="profile-info__buttons">
-                                    <button onClick={() => this.logOut()} className="profile-info__btn">Logout</button>
-                                </div> */}
                             </section>
                             <p className="profile-info__email">{userInfo.email}</p>
                             <p className="profile-info__phone">{userInfo.phone}</p>
