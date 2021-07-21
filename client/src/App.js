@@ -1,7 +1,7 @@
 import './App.scss';
 
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import Header from './components/Header/Header';
 import HomePage from './pages/HomePage/HomePage';
@@ -14,19 +14,11 @@ import AddTripPage from './pages/AddTripPage/AddTripPage';
 import EditTripPage from './pages/EditTripPage/EditTripPage';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authToken, setAuthToken] = useState(sessionStorage.getItem('authToken'));
-
-  useEffect(() => {
-      if (authToken) {
-        setIsLoggedIn(true);
-      }
-    }, [authToken]);
-
 
   return (
     <BrowserRouter>
-      <Header isLoggedIn={isLoggedIn}/>
+      <Header authToken={authToken} />
       <Switch>
         <Route exact path="/" render={(props) => <HomePage authToken={authToken} {...props} />} />
         <Route path="/register" render={(props) => <RegisterPage authToken={authToken} setAuthToken={setAuthToken} {...props} />} />
@@ -34,7 +26,7 @@ function App() {
         <Route path="/profile" render={(props) => <ProfilePage authToken={authToken} setAuthToken={setAuthToken} {...props} />} />
         <Route exact path="/trips" render={(props) => <TripsListPage authToken={authToken} setAuthToken={setAuthToken} {...props} />} />
         <Route exact path="/trips/add" render={(props) => <AddTripPage authToken={authToken} {...props} />} />
-        <Route exact path="/trips/:tripId" render={(props) => <TripDetailsPage isLoggedIn={isLoggedIn} {...props} />} />
+        <Route exact path="/trips/:tripId" render={(props) => <TripDetailsPage authToken={authToken} {...props} />} />
         <Route exact path="/trips/:tripId/edit" render={(props) => <EditTripPage authToken={authToken} {...props} />} />
       </Switch>
     </BrowserRouter>

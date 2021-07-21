@@ -11,9 +11,26 @@
     min-height: 10vh;
     background-color: colors.$ink-6;
 
+    @include tablet {
+        padding: $padding*2 0;
+    }
+
+    @include desktop {
+        flex-direction: row;
+        width: 1080px;
+        align-self: center;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     &__link {
         text-decoration: none;
         color: colors.$ink-1;
+        margin-bottom: $margin;
+
+        @include desktop {
+            margin-bottom: 0;
+        }
     }
 
     &__logo {

@@ -6,16 +6,9 @@
     display: flex;
     justify-content: space-evenly;
     width: 100%;
-    padding: $padding*0.5;
-
-    @include tablet {
-        padding: $padding*2;
-    }
 
     @include desktop {
-        width: 1080px;
-        align-self: center;
-        padding: $padding*2 0;
+        width: auto;
     }
 
     &__link {
@@ -40,6 +33,10 @@
             width: auto;
             height: auto;
             padding: $padding*0.5 $padding;
+        }
+
+        @include desktop {
+            margin-left: $margin;
         }
     }
 

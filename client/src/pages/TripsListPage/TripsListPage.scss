@@ -16,6 +16,7 @@
     @include desktop {
         width: 1080px;
         align-self: center;
+        padding: $padding*2 0;
     }
 
     &__header {

@@ -7,6 +7,8 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
+import { activitiesList, suppliesList } from '../../utils/list';
+
 import plusIcon from "../../assets/icons/add-more-plus.svg";
 
 function AddTripPage(props) {
@@ -48,9 +50,6 @@ function AddTripPage(props) {
             .min(2, 'Additional Info must be at least 2 characters')
             .max(255, 'Additional Info not belonger than 255 characters')
     });
-
-    const activitiesList = ['Day Hike', 'Overnight Hike', 'Camping', 'Kayaking'];
-    const suppliesList = ['First Aid Kit', 'Flashlight', 'Map & Compass', 'Firestarter', 'Food & Water'];
 
     const postTripInfo = (values) => {
         const {

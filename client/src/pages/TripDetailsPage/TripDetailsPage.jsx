@@ -101,7 +101,7 @@ class TripDetailsPage extends Component {
 
     render() {
         const { isLoading, tripDetails } = this.state;
-        const { isLoggedIn } = this.props;
+        const { authToken } = this.props;
 
         const { id,
             name,
@@ -122,7 +122,7 @@ class TripDetailsPage extends Component {
                 <main className="trip-details-page">
                     <section className="trip-details-page__header">
                         <h1 className="trip-details-page__title">Trip Details</h1>
-                        {isLoggedIn &&
+                        {!!authToken &&
                             <Link to={`/trips/${id}/edit`} className="trip-details-page__btn">
                                 Edit
                             </Link>

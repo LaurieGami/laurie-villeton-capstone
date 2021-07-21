@@ -7,7 +7,7 @@ import NavBar from "../NavBar/NavBar";
 import compassIcon from '../../assets/icons/compass-icon.svg';
 
 function Header(props) {
-    const { isLoggedIn } = props;
+    const { authToken } = props;
 
     return (
         <>
@@ -18,10 +18,10 @@ function Header(props) {
                         <h2 className="header__logo-text">Smart Adventures</h2>
                     </div>
                 </Link>
+                {!!authToken &&
+                    <NavBar />
+                }
             </header>
-            {isLoggedIn &&
-                <NavBar />
-            }
         </>
     )
 }
