@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 const usersRoute = require('./routes/users');
 const tripsRoute = require('./routes/trips');
+const notificationsRoute = require('./routes/notifications');
 
 // Middlewares
 app.use(express.json());
@@ -21,5 +22,6 @@ app.get('/', (req, res) => {
 
 app.use('/api', usersRoute);
 app.use('/api', tripsRoute);
+app.use('/api', notificationsRoute);
 
 app.listen(PORT, console.log(`running at http://localhost:${PORT}`));
